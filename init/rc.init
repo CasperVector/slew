@@ -1,0 +1,28 @@
+#!/bin/rc
+
+. /etc/s6/lib/s6.rc
+
+fn init {
+	~ $quiet 1 && con=consoles
+	s6-rc-init -c /etc/s6/db/compiled /run/service || exit 2
+	echo '* init: starting services...'
+	if (s6-rc -v2 -t20000 -u change default $con) {
+		echo '* init: services started'
+	} else if ([ -f /run/reboot ]) {
+		echo '* init: reboot required; triggering reboot...'
+		exit 1
+	} else echo '* init: some service(s) failed to start'
+	~ $quiet 1 || s6-rc -u change consoles
+	exit 0
+}
+
+~ $quiet 1 && @ init || { init >[2=1] | tee /dev/console }
+switch ($status(1)) {
+case 1
+	reboot
+case 2
+	exec > /dev/console >[2=1]
+	echo '! init: s6-rc-init failure; enabling rescue shell...'
+	exec sh -i < /dev/console
+}
+

@@ -1,0 +1,9 @@
+#!/bin/rc -e
+
+exec >[2=1]
+. /etc/s6/lib/srv.rc
+. /etc/s6/lib/rate.rc
+
+echo_ret $*
+rate_finish 500 $1
+

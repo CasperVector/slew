@@ -1,0 +1,5 @@
+#!/bin/rc
+
+/etc/s6/init/rc.fin
+s6-svscanctl -h /run/service
+

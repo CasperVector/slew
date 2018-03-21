@@ -1,0 +1,5 @@
+#!/bin/rc -e
+
+. /etc/s6/lib/s6.rc
+loadkeys -q -u $keymap
+

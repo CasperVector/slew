@@ -1,0 +1,5 @@
+#!/bin/rc -e
+
+~ $#* 2 || exit 1
+for (pass in $1/*.rc) if ([ -x $pass ]) $pass $2
+

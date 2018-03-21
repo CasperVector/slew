@@ -1,0 +1,7 @@
+#!/bin/rc
+
+exec < /proc/kmsg >[2=1] \
+s6-setuidgid klogd \
+emptyenv -p \
+ucspilogd
+

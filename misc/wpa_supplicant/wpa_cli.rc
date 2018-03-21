@@ -1,0 +1,14 @@
+#!/bin/rc -e
+
+. /etc/iface/fn.rc
+if (! ~ $#* 2) {
+	echo 'wtf?'
+	exit 1
+}
+[ -d /run/service/dhcpc.$1 ] || exit 0
+switch ($2) {
+	case CONNECTED; s6-svc -1 /run/service/dhcpc.$1
+	case DISCONNECTED; s6-svc -2 /run/service/dhcpc.$1
+	case *; echo 'wtf?'; exit 1
+}
+

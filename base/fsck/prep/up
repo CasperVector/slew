@@ -1,0 +1,27 @@
+#!/bin/rc
+
+ret=`{cat /sys/class/power_supply/AC*/online >[2] /dev/null}
+if (! {~ $ret 1 || ~ $#ret 0}) {
+	echo 'fsck: skipping with AC off'
+	exit 0
+}
+fsck -TAa
+
+switch ($status) {
+case 0
+	exit 0
+
+case 1
+	echo 'fsck: filesystem(s) repaired'
+	exit 0
+	
+case [23]
+	echo 'fsck: need reboot after repairing'
+	touch /run/reboot
+	exit 1
+
+case *
+	echo 'fsck: unhandled exit code `'$status''''
+	exit 1
+}
+

@@ -1,0 +1,8 @@
+#!/bin/rc
+
+for (mod in ``(``(){echo}){
+	sed 's/#.*//; /^$/d' /etc/modules /etc/modules-load.d/*.conf >[2] /dev/null
+}) {
+	modprobe `{echo $mod} || exit 1
+}
+

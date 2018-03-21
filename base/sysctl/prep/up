@@ -1,0 +1,9 @@
+#!/bin/rc -e
+
+for (f in \
+	/etc/sysctl.d/*.conf \
+	/usr/lib/sysctl.d/*.conf \
+	/lib/sysctl.d/*.conf \
+	/etc/sysctl.conf \
+) if ([ -f $f ]) sysctl -qp $f
+

@@ -1,0 +1,13 @@
+#!/bin/rc -e
+
+logd=/var/log/init
+
+if (! [ -d $logd ]) install -d -o root -g adm -m 0750 $logd
+cat /run/uncaught-logs/current >> $logd/0
+if ([ `{stat -c '%s' $logd/0} -lt $2 ]) exit 0
+
+for (i in `{seq 0 $1 | tac}) if ([ -f $logd/$i ]) {
+	[ $i -eq $1 ] && rm $logd/$i ||
+	mv $logd/$i $logd/`{expr $i + 1 || true}
+}
+

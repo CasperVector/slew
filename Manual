@@ -1,0 +1,193 @@
+Usage of s6.rc
+==============
+
+Introduction
+------------
+
+In addition to the functionalities provided by s6/s6-rc, distributions often
+want the following features in an init/rc framework:
+* (Nearly) ready-for-use definitions for longruns and oneshots.
+* Instanced supervision (eg. `dhcpc.eth0' / `dhcpc.wlan0').
+* Optional dependencies (like those in [1]).
+* Package-specific automatic manipulation of definitions.
+
+[1] <https://wiki.gentoo.org/wiki/Handbook:AMD64/Working/Initscripts#Dependencies>.
+
+While there are projects that provide longrun definitions, oneshots and
+service dependencies are largely unconsidered; and while some of them (eg.
+supervision-scripts [2]) provide templates for `./run' scripts, we also want to
+be able to generate definitions for logging services as well as corresponding
+`./producer-for' / `./consumer-for' files in an automated way.
+
+[2] <https://bitbucket.org/avery_payne/supervision-scripts>.
+
+Fortunately, due to the filesystem-based input interface of s6/s6-rc (and other
+daemontools-like init/rc frameworks in general), it is very easy to write
+preprocessors for s6-rc service definitions using a combination of well-known
+Unix utilities.  And by using a multi-pass preprocessing scheme like the
+nanopass framework [3] (note the similar relations between scheme <-> nanopass,
+process attributes <-> Bernstein chainloading and service definitions <-> s6-rc
+preprocessors), we are able to not only write the preprocessor as tiny passes,
+but also ship package-specific passes that can be plugged into the preprocessor.
+
+[3] <https://nanopass.org/>.
+
+During the preparation of this project, it quickly became obvious that execline
+is, while useful for writing stage 1/3 scripts, not really expressive enough for
+some `./run' / `./finish' scripts (eg. those for instanced supervision), let
+alone oneshots which are often even more complex.  For this reason, the shell is
+chosen as the language for most scripts in this project; and to avoid some
+problems inherent in the Bourne shell [4], s6.rc uses rc(1).
+
+[4] <https://skarnet.org/cgi-bin/archive.cgi?2:msp:1375:lbimjlgggoajjofdbeoc>.
+
+
+The booting and halting scripts
+-------------------------------
+
+The `init', `run' and `env' directories contain the init system of s6.rc, and
+shall be installed at `/etc/s6'.  The actual stage 1 init executable is
+`init/rc.boot', which can be linked from `/sbin/init' or specified on the
+kernel command line.  `rc.boot' exec()s into `s6-svscan' (stage 2), which
+exec()s into its `finish' script linked to `init/rc.halt', the stage 3
+executable, on shutdown.  At the beginning and end of stage 2, `init/rc.init'
+and `init/rc.fin' are executed respectively.  The `crash' script of `s6-svscan'
+is linked to `bin/rc.crash'.
+
+Before exec()ing into `s6-svscan', `rc.boot' copies everything in `/etc/s6/run'
+into `/run' as is, and sets the environment using `s6-envdir' according to
+`/etc/s6/env' ($PATH would be set at the beginning of `rc.boot', and preserved
+if `env/PATH' does not exist, so the latter is not necessary).  The catch-all
+logger is located at `/run/service/s6-svscan.log', and logs to
+`/run/uncaught-logs' as the `catchall' user; therefore, it is recommended to set
+the ownership and permission of `/etc/s6/run/uncaught-logs' to `catchall:adm'
+and '0750'.  By the way, apart from doing other well-known tasks, `rc.halt' also
+saves `/run/uncaught-logs/current' to the `/var/log/init' directory before
+unmounting filesystems.
+
+`rc.init' requires the compiled s6-rc service database to be located at (or
+linked to) `/etc/s6/db/compiled', and to contain two bundles called `default'
+and `consoles'; `consoles' should contain the getty services, and `default'
+should contain all the rest that are expected to be started automatically during
+booting.
+
+Unlike s6-linux-init, s6.rc follows the busybox init(8) signal convention, and
+`SIGUSR1' and `SIGUSR2' sent to `s6-svscan' will respectively trigger halt and
+poweroff, instead of the other way around.  Additionally, if some service(s)
+fail to start during booting, and `/run/reboot' exists, `rc.init' will trigger
+reboot automatically; this can be useful for certain scenarios (eg. when
+required by fsck(8)) where automatic reboot is desirable.
+
+s6.rc uses a configuration file, `lib/s6.rc', that controls some (but not all)
+aspects of init/rc system in a centralised way (like `rc.conf' in some other
+init/rc systems); cf. the comments therein for detailed usage of it.
+
+
+Service definitions and the preprocessor
+----------------------------------------
+
+The `base', `main' and `lib' directory contains the service definitions, the
+preprocessor, as well as ancillary utilities and configuration files; they shall
+be installed at `/etc/s6', perhaps with unused service definitions (and related
+files) omitted.  The `base' directory contains the basic definitions,
+which are linked into the `main' directory; the `lib' directory contains the
+preprocessor, ancillary utilities and configuration files including `s6.rc'.
+The `misc' directory contains package-specific preprocessing passes, and files
+that are not to be installed into `/etc/s6'.
+
+The `main' directory additionally contains the bundles `machine', `services'
+`default', `consoles', and some bundles which are used by the preprocessor.  The
+`default' bundle shipped with s6.rc depends on `machine' and `services', as well
+as the `local' oneshot which itself depends on `machine' and `services'; in this
+way, s6.rc can somewhat emulate sysvinit runlevels.  In order to customise the
+list of automatically started services, the user would most often need to modify
+the contents of the `services' bundle; by the way, the `network' and `local'
+oneshots in `base' are also among the most customised services.
+
+`lib/prep.rc' is the service definition preprocessor, and is invoked like:
+  # cp -a /etc/s6/main /etc/s6/main.prep
+  # /etc/s6/lib/prep.rc /etc/s6/lib/prep /etc/s6/main.prep
+What `prep.rc' does is simply running, on the $2 directory, all executables with
+the `.rc' extension in the $1 directory in lexical order, and each script is a
+single preprocessing pass; if it finishes successfully, the $2 directory would
+contain service definitions suitable for use with `s6-rc-compile'.
+
+The preprocessing passes follow certain rules: all files used solely by these
+passes shall be either in the `.prep' subdirectory of $1 (for global settings)
+or in the `prep' subdirectory of a service directory in $1 (for per-service
+settings).  It is also recommended that every pass chdir()s to its $1, and use
+plain text files containing text like `../base/s6log.' (relative to $1) instead
+of symbolic links when referencing external files and directories; to understand
+the rationale for this, cf. `lib/prep/10-multi.rc'.  Finally, cf. the comments
+in individual passes for their detailed usage.
+
+Along with the preprocessor, also shipped with s6.rc are "libraries" located
+in `lib' that abstract common patterns, which would otherwise result in
+boilerplates in the service definitions: eg. see `lib/srv.rc' (in combination
+with eg. `base/getty.') for how to do instanced supervision, and `lib/rate.rc'
+(in combination with eg. `base/sshhole.') for how to play cybernetics with
+services that can sometimes repeatedly exit due to transient failures.
+
+Although s6-rc bundles can be used to implement polymorphism (eg. a `keymap'
+bundle that contains either `keymap.kbd' or `keymap.busybox'), s6.rc prefers to
+use links (eg. `main/keymap' linked to `base/keymap.busybox'), because service
+directories in `base' are linked into `main' anyway.  However, a bundle might
+still be necessary when it provides a polymorphic interface that happens to not
+require anything to be run (eg. `base/drivers.udev' in comparison with
+`base/drivers.mdev'), and non-polymorphic dependencies (eg. `devices.udev' /
+`devices.mdev') need to be explicitly linked into `main'.
+
+
+Mistakes to avoid
+-----------------
+
+In general, there are few ways one can mess up a system based on s6/s6-rc;
+nevertheless, sometimes the symptoms are quite obscure and it is not easy to
+find the culprit at once.  Here are some common mistakes that might have obscure
+symptoms; avoid them, and your system will probably be well.
+
+* Due to its implementation [5], s6 does not handle backward time jump well,
+  and requires the clock to be not too far in the future when it is running.
+  Therefore, s6.rc initialises the system clock in `rc.boot' instead of the
+  beginning of stage 2.  Of course, it is also essential for the user to set
+  $clock correctly in `s6.rc'.
+
+[5] <https://skarnet.org/cgi-bin/archive.cgi?2:mss:1399:fgnhnlmchokkkmcfbahd>.
+
+* As noted in [6], a live s6-rc service database should not be tampered with,
+  and it is wrong to delete the live database, replace it with a new one, and
+  then run `s6-rc-update /etc/s6/db/compiled'.  For an alternative, see
+  `lib/build.rc'; but note that the scripts depends on some internal
+  details of s6-rc service databases, which are undocumented as of now.
+
+[6] <https://skarnet.org/software/s6-rc/s6-rc-compile.html>.
+
+* Due to some implementation details [7] of `redirfd -wnb', it must be invoked
+  before `background' in `rc.boot', or race conditions might occur.  (Users who
+  use `rc.boot' as is will not encounter this issue, but distributions might
+  customise the scripts in s6.rc, so this note is still necessary.)
+
+[7] <https://git.skarnet.org/cgi-bin/cgit.cgi/s6-linux-init/commit/?id=60bd7b90>.
+
+The following are not strictly related to s6/s6-rc, but might still be useful:
+
+* Implementing syslogd with `s6-ipcserver' and `ucspilogd' (cf.
+  `base/syslog.ucspi') is an extremely elegant idea, but it depends on syslog()
+  using `SOCK_STREAM' sockets, which is not the case with musl [8].  For this
+  reason, alternative services (eg. `base/syslog.busybox') are also shipped with
+  s6.rc.
+
+[8] <http://www.openwall.com/lists/musl/2015/08/10/1>.
+
+* The rules for automatic addition of `^' for string concatenation in rc(1) can
+  be hard to grasp; so when unsure, write `^'s explicitly.  In v1.7.4 and
+  earlier versions of Rakitzis rc(1), `=' in strings must be quoted; this
+  limitation is gone [9] in newer versions, but the new versions are not yet
+  widely adopted.
+
+[9] <https://github.com/rakitzis/rc/issues/29>.
+
+* Certain daemons (eg. openssh) use setproctitle() or similar tricks to change
+  the title of their processes, and this seems to be broken with an empty
+  enviroment.  Therefore, all longruns in s6.rc are run with $PATH preserved.
+

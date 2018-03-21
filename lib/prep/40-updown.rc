@@ -1,0 +1,14 @@
+#!/bin/rc -e
+#
+# Creates `up' / `down' for oneshots with `prep/up' / `prep/down': assuming
+# `.prep/base' specifies `/etc/s6/main', `srv/prep/up' will make `srv/up' say
+# `/etc/s6/main/srv/prep/up'.
+
+~ $#* 1 && cd $1 || false
+base=`{cat .prep/base}
+for (srv in `{ls}) if (~ `{cat $srv/type} oneshot) {
+	for (type in up down) if ([ -f $srv/prep/$type ]) {
+		echo $base/$srv/prep/$type > $srv/$type
+	}
+}
+

@@ -1,0 +1,8 @@
+bootmisc
+drivers
+fstab
+network
+origin
+sysctl
+syslog
+kmsg

@@ -1,0 +1,7 @@
+#!/bin/rc -e
+
+. /etc/s6/lib/s6.rc
+if (~ $clock /*) {
+	expr `{date +%s} + 9 > $clock || true
+} else if (! ~ $#clock 0) hwclock $clock --systohc
+

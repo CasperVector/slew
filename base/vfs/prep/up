@@ -1,0 +1,23 @@
+#!/bin/rc -e
+
+mopts=noexec,nosuid,nodev
+mount -n -t tmpfs -o $mopts',mode=0755,size=10M' cgroup_root /sys/fs/cgroup
+mkdir -m 1777 /dev/mqueue
+mount -n -t mqueue -o $mopts mqueue /dev/mqueue
+
+for (args in ``(``(){echo}){cat /proc/cgroups}) {
+	if (args=`{echo $args}; ~ $args(3) 1) {
+		name=$args(1)
+		mkdir /sys/fs/cgroup/$name
+		mount -n -t cgroup -o $mopts,$name $name /sys/fs/cgroup/$name
+	}
+}
+
+for (args in \
+	'pstore /sys/fs/pstore' \
+	'securityfs /sys/kernel/security' \
+) {
+	args=`{echo $args}
+	mount -n -t $args(1) -o $mopts $args(1) $args(2)
+}
+

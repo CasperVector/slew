@@ -1,0 +1,5 @@
+#!/bin/rc
+
+mnts=`{awk '{ if ($1 ~ /^\// && $2 != "/") print $2 }' < /proc/mounts | tac}
+~ $#mnts 0 || umount -r $mnts
+

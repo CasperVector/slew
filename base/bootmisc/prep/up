@@ -1,0 +1,9 @@
+#!/bin/rc -e
+
+mkdir -p /var/lib/misc
+if ([ -f /var/lib/misc/random-seed ]) {
+	cat /var/lib/misc/random-seed > /dev/urandom
+} else {
+	install -m 0600 /dev/null /var/lib/misc/random-seed
+}
+

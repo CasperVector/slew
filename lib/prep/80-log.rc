@@ -1,0 +1,24 @@
+#!/bin/rc -e
+#
+# `prep/log' specifies the logger of a service: if `srv/prep/log' says
+# `../base/s6log.', `../base/s6log.' will be copied as `srv.log', the required
+# `producer-for' / `consumer-for' files will be created, and `srv/prep/logdata'
+# will be copied as `srv.log/data'; alternatively, if `srv/prep/log' does not
+# exist but `srv/producer-for' exists and says `srv.log', `srv' will be added to
+# `srv.log/consumer-for'.
+
+~ $#* 1 && cd $1 || false
+for (srv in `{ls}) {
+	if ([ -f $srv/prep/log ]) {
+		cp -a `{realpath `{cat $srv/prep/log}} $srv.log
+		echo $srv.log > $srv/producer-for
+		echo $srv >> $srv.log/consumer-for
+		if ([ -d $srv/prep/logdata ]) {
+			mkdir -p $srv.log/data
+			cp -a $srv/prep/logdata/* $srv.log/data
+		}
+	} else if ([ -f $srv/producer-for ]) {
+		echo $srv >> `{cat $srv/producer-for}^/consumer-for
+	}
+}
+

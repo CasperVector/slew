@@ -1,0 +1,13 @@
+#!/bin/rc -e
+#
+# Expands all links at the root level of $1, and creates empty `prep'
+# subdirectories if nonexistent.
+
+~ $#* 1 && cd $1 || false
+for (srv in `{ls}) if ([ -L $srv ]) {
+	src=`{realpath $srv}
+	rm -f $srv
+	cp -a $src $srv
+	mkdir -p $srv/prep
+} else mkdir -p $srv/prep
+

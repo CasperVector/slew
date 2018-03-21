@@ -1,0 +1,9 @@
+#!/bin/rc
+
+fn car { echo $1 | sed 's/^.*\.//' }
+fn cdr { echo $1 | sed 's/\.[^.]*$//' }
+
+self=`{basename `{pwd}}
+name=`{car $self}
+priv=/run/srv-data/$self.priv
+

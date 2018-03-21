@@ -1,0 +1,12 @@
+#!/bin/rc
+
+. /etc/s6/lib/s6.rc
+dmesg -n 1
+
+if (~ $clock /*) {
+	if ([ -f $clock ]) date -s @`{cat $clock} > /dev/null
+} else if (! ~ $#clock 0) {
+	hwclock $clock --systz
+	hwclock $clock --hctosys
+}
+

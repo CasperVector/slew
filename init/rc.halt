@@ -1,0 +1,36 @@
+#!/bin/execlineb -S0
+
+cd /
+redirfd -w 1 /dev/console
+fdmove -c 2 1
+foreground { s6-svc -X /run/service/s6-svscan.log }
+wait -r { }
+
+foreground { echo "* halt: syncing disks..." }
+foreground { sync }
+
+foreground { echo "* halt: sending SIGTERM/SIGCONT/SIGHUP to processes..." }
+foreground { killall5 -TERM }
+foreground { killall5 -CONT }
+foreground { killall5 -HUP }
+foreground { sleep 2 }
+
+foreground { echo "* halt: sending SIGKILL to processes..." }
+foreground { killall5 -KILL }
+wait { }
+
+foreground { echo "* halt: saving clock and uncaught logs..." }
+foreground { /etc/s6/init/save_log.rc 6 5000000 }
+foreground { /etc/s6/init/save_clock.rc }
+
+foreground { echo "* halt: unmounting filesystems, disabling swap..." }
+foreground { /etc/s6/init/umount.rc }
+foreground { swapoff -a }
+
+foreground { echo "* halt: remounting rootfs read-only..." }
+foreground { mount -n -o remount,ro / }
+foreground { sync }
+
+foreground { echo "* halt: triggering "${1}"..." }
+${1} -f
+

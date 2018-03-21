@@ -1,0 +1,3 @@
+#!/bin/rc
+exec >[2=1] emptyenv -p dnsmasq -k -8- -u dnsmasq -g dnsmasq
+

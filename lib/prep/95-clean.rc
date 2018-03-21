@@ -1,0 +1,11 @@
+#!/bin/rc -e
+#
+# Removes the `.prep' directory, all `prep' subdirectories, as well as all
+# service directories which contained `prep/ignore'.
+
+~ $#* 1 && cd $1 || false
+for (srv in `{ls}) {
+	[ -f $srv/prep/ignore ] && rm -rf $srv || rm -rf $srv/prep
+}
+rm -rf .prep
+

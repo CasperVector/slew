@@ -1,0 +1,14 @@
+#!/bin/rc
+
+. /etc/s6/lib/s6.rc
+
+fn fin {
+	echo '* fin: stopping services...'
+	if (s6-rc -v2 -t10000 -da change) {
+		echo '* fin: services stopped'
+	} else echo '! fin: some service(s) failed to stop'
+}
+
+echo > /dev/console
+~ $quiet 1 && fin || { fin >[2=1] | tee /dev/console }
+

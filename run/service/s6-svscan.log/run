@@ -1,0 +1,10 @@
+#!/bin/rc
+
+exec \
+redirfd -w 1 /dev/console \
+fdmove -c 2 1 \
+redirfd -rnb 0 fifo \
+s6-setuidgid catchall \
+emptyenv -p \
+s6-log -bp t T /run/uncaught-logs
+

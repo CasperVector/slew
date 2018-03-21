@@ -1,0 +1,5 @@
+#!/bin/rc
+
+logu=ntplog
+args=(n6 s5000000 !gzip -'reply from .*, next query' t T $logd)
+

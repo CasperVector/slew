@@ -1,0 +1,6 @@
+#!/bin/rc -e
+
+exec >[2=1]
+. /etc/s6/lib/srv.rc
+exec emptyenv -p busybox udhcpc -fR -a 5000 -i $name
+

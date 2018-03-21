@@ -1,0 +1,20 @@
+#!/bin/rc -e
+
+mountpoint -q /proc || mount -n -t proc -o noexec,nosuid,nodev proc /proc
+mountpoint -q /sys || mount -n -t sysfs -o noexec,nosuid,nodev sysfs /sys
+
+[ -d /dev/pts ] || mkdir /dev/pts
+[ -d /dev/shm ] || mkdir /dev/shm
+mountpoint -q /dev/pts ||
+	mount -n -t devpts -o 'gid=5,mode=0620,noexec,nosuid' devpts /dev/pts
+mountpoint -q /dev/shm ||
+	mount -n -t tmpfs -o 'mode=1777,noexec,nosuid,nodev' shm /dev/shm
+
+for (args in \
+	'/proc/self/fd /dev/fd' \
+	'/proc/self/fd/0 /dev/stdin' \
+	'/proc/self/fd/1 /dev/stdout' \
+	'/proc/self/fd/2 /dev/stderr' \
+) ln -snf `{echo $args}
+hostname `{cat /etc/hostname}
+

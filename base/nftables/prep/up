@@ -1,0 +1,5 @@
+#!/bin/rc -e
+
+nft flush ruleset
+nft -f /etc/nftables.conf
+

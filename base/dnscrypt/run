@@ -1,0 +1,5 @@
+#!/bin/rc
+
+exec >[2=1] s6-setuidgid dnscrypt emptyenv -p \
+dnscrypt-proxy -config /etc/dnscrypt-proxy.toml
+

@@ -1,0 +1,6 @@
+#!/bin/rc -e
+
+mount -o remount,rw /
+mount -a
+swapon -a
+

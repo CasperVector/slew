@@ -1,0 +1,11 @@
+#!/bin/rc -e
+#
+# `prep/multi' is used to specify the source for bundle contents, whose links
+# to the source service directory will be created.
+
+~ $#* 1 && cd $1 || false
+for (srv in `{ls}) if ([ -f $srv/prep/multi ]) {
+	src=`{cat $srv/prep/multi}
+	for (dest in `{cat $srv/contents}) ln -sT $src $dest
+}
+

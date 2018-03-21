@@ -1,0 +1,5 @@
+#!/bin/rc
+
+logu=sqllog
+args=(n6 s5000000 !gzip t $logd)
+

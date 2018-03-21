@@ -1,0 +1,28 @@
+#!/bin/rc
+
+fn echo_ret {
+	if ([ $1 -eq 256 ]) {
+		echo 'killed by signal `'$2''''
+	} else echo 'exited with code `'$1''''
+}
+
+fn rate_run {
+	if (! [ -d $priv ]) install -d -o root -g adm -m 0750 $priv
+	if ([ -f $priv/delay ]) sleep `{cat $priv/delay}
+	date +%s > $priv/date
+}
+
+fn rate_finish {
+	cur=`{date +%s}
+	prev=`{cat $priv/date}
+	dif=`{expr $cur - $prev || true}
+
+	if ([ $dif -ge $1 -o $2 -eq 0 -o $2 -eq 256 ]) {
+		rm -f $priv/delay
+	} else if ([ -f $priv/delay ]) {
+		if (delay=`{cat $priv/delay}; [ $delay -lt $1 ]) {
+			expr $delay '*' 2 > $priv/delay || true
+		}
+	} else echo 1 > $priv/delay
+}
+

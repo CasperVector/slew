@@ -1,0 +1,6 @@
+#!/bin/rc
+
+exec >[2=1] emptyenv -p s6-envuidgid syslogd \
+fdmove 1 3 s6-ipcserver -U -1 -- /dev/log \
+fdmove -c 1 2 ucspilogd IPCREMOTEEUID IPCREMOTEEGID
+

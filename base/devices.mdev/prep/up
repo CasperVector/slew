@@ -1,0 +1,8 @@
+#!/bin/rc -e
+
+echo /sbin/mdev > /proc/sys/kernel/hotplug
+for (d in `{find /sys/devices -name 'usb[0-9]*'}) {
+	if ([ -f $d/uevent ]) echo add > $d/uevent
+}
+mdev -s
+

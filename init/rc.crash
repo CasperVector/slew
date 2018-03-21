@@ -1,0 +1,6 @@
+#!/bin/rc
+
+exec > /dev/console >[2=1]
+printf '\n! s6-svscan crashed; enabling rescue shell...\n'
+exec sh -i < /dev/console
+

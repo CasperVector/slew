@@ -1,0 +1,33 @@
+#!/bin/rc -e
+#
+# Usage: /etc/s6/lib/build.rc main
+#
+# This script copies `/etc/s6/main' to `/etc/s6/prep.main', preprocesses it, and
+# compiles it to `/etc/s6/db/main'; `/etc/s6/db/main' will be moved to
+# `/etc/s6/db/old.main' if existent.  On a live system, this script would also
+# update `/run/s6/compiled' if necessary, and finally exec() into
+# `s6-rc-update -n /etc/s6/db/compiled'.
+#
+# This script does not delete anything or trigger any real state transition, and
+# the user is responsible for finally invoking `s6-rc-update' as well as
+# deleting `/etc/s6/db/old.main' and `/etc/s6/prep.main'.
+
+~ $#* 1 || exit 1
+[ -d /run/s6-rc ] && live=1 || live=0
+if (~ $live 1 && ! [ -L /run/s6-rc/compiled ]) exit 1
+if ([ -d /etc/s6/db/old.$1 -o -d /etc/s6/prep.$1 ]) exit 1
+
+if ([ -d /etc/s6/db/$1 ]) {
+	if (
+		~ $live 1 &&
+		~ `{realpath /run/s6-rc/compiled} `{realpath /etc/s6/db/$1}
+	) ln -snf /etc/s6/db/old.$1 /run/s6-rc/compiled
+	mv /etc/s6/db/$1 /etc/s6/db/old.$1
+} else mkdir -p /etc/s6/db
+ln -snf $1 /etc/s6/db/compiled
+
+cp -a /etc/s6/$1 /etc/s6/prep.$1
+/etc/s6/lib/prep.rc /etc/s6/lib/prep /etc/s6/prep.$1
+s6-rc-compile -h fdholder /etc/s6/db/$1 /etc/s6/prep.$1
+if (~ $live 1) s6-rc-update -n /etc/s6/db/compiled
+

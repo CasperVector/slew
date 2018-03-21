@@ -1,0 +1,22 @@
+#!/bin/rc -e
+#
+# `prep/odep' and `prep/ordep' respectively specify optional dependencies and
+# optional reverse dependencies, which will be ignored if nonexistent.
+
+~ $#* 1 && cd $1 || false
+
+fn dep_add {
+	if (~ `{cat $1/type} bundle) {
+		echo $2 >> $1/contents
+	} else echo $2 >> $1/dependencies
+}
+
+for (srv in `{ls}) {
+	if ([ -f $srv/prep/odep ]) for (dep in `{cat $srv/prep/odep}) {
+		if ([ -d $dep ]) dep_add $srv $dep
+	}
+	if ([ -f $srv/prep/ordep ]) for (rdep in `{cat $srv/prep/ordep}) {
+		if ([ -d $rdep ]) dep_add $rdep $srv
+	}
+}
+

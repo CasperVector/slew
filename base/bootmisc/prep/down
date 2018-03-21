@@ -1,0 +1,5 @@
+#!/bin/rc -e
+
+dd 'bs='`{expr `{cat /proc/sys/kernel/random/poolsize} / 8} 'count=1' \
+	< /dev/urandom > /var/lib/misc/random-seed
+
