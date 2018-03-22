@@ -45,25 +45,23 @@ problems inherent in the Bourne shell [4], s6.rc uses rc(1).
 The booting and halting scripts
 -------------------------------
 
-The `init', `run' and `env' directories contain the init system of s6.rc, and
-shall be installed at `/etc/s6'.  The actual stage 1 init executable is
-`init/rc.boot', which can be linked from `/sbin/init' or specified on the
-kernel command line.  `rc.boot' exec()s into `s6-svscan' (stage 2), which
-exec()s into its `finish' script linked to `init/rc.halt', the stage 3
-executable, on shutdown.  At the beginning and end of stage 2, `init/rc.init'
-and `init/rc.fin' are executed respectively.  The `crash' script of `s6-svscan'
-is linked to `bin/rc.crash'.
+The `init' and `run' directories contain the init system of s6.rc, and shall be
+installed at `/etc/s6'.  The actual stage 1 init executable is `init/rc.boot',
+which can be linked from `/sbin/init' or specified on the kernel command line.
+`rc.boot' exec()s into `s6-svscan' (stage 2), which exec()s into its `finish'
+script linked to `init/rc.halt', the stage 3 executable, on shutdown.  At the
+beginning and end of stage 2, `init/rc.init' and `init/rc.fin' are executed
+respectively.  The `crash' script of `s6-svscan' is linked to `bin/rc.crash'.
 
 Before exec()ing into `s6-svscan', `rc.boot' copies everything in `/etc/s6/run'
 into `/run' as is, and sets the environment using `s6-envdir' according to
-`/etc/s6/env' ($PATH would be set at the beginning of `rc.boot', and preserved
-if `env/PATH' does not exist, so the latter is not necessary).  The catch-all
-logger is located at `/run/service/s6-svscan.log', and logs to
-`/run/uncaught-logs' as the `catchall' user; therefore, it is recommended to set
-the ownership and permission of `/etc/s6/run/uncaught-logs' to `catchall:adm'
-and '0750'.  By the way, apart from doing other well-known tasks, `rc.halt' also
-saves `/run/uncaught-logs/current' to the `/var/log/init' directory before
-unmounting filesystems.
+the `/etc/s6/env' directory if the latter exists.  The catch-all logger is
+located at `/run/service/s6-svscan.log', and logs to `/run/uncaught-logs' as the
+`catchall' user; therefore, it is recommended to create the
+`/etc/s6/run/uncaught-logs' directory with ownership `catchall:adm' and
+permission '0750'.  By the way, apart from doing other well-known tasks,
+`rc.halt' also saves `/run/uncaught-logs/current' to the `/var/log/init'
+directory before unmounting filesystems.
 
 `rc.init' requires the compiled s6-rc service database to be located at (or
 linked to) `/etc/s6/db/compiled', and to contain two bundles called `default'

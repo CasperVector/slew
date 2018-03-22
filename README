@@ -1,5 +1,5 @@
-s6.rc: an init/rc framework based on s6/s6-rc
-=============================================
+s6.rc: a distribution-friendly init/rc framework based on s6/s6-rc
+==================================================================
 
 About
 -----
