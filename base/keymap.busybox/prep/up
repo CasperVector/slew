@@ -1,5 +1,5 @@
 #!/bin/rc -e
 
-. /etc/s6/lib/s6.rc
+. /etc/slew/lib/slew.rc
 zcat /etc/keymap/$keymap.bmap.gz | loadkmap
 

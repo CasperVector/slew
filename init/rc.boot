@@ -14,10 +14,10 @@ if {
   { mount -n -t tmpfs -o rw,mode=0755,size=10M tmpfs /run }
   mountpoint -q /run
 }
-if { /etc/s6/init/load_clock.rc }
-if { cp -a /etc/s6/run / }
+if { /etc/slew/init/load_clock.rc }
+if { cp -a /etc/slew/run / }
 if { mkfifo -m 600 /run/service/s6-svscan.log/fifo }
-s6-envdir -I /etc/s6/env
+s6-envdir -I /etc/slew/env
 
 redirfd -wnb 1 /run/service/s6-svscan.log/fifo
 background
@@ -25,7 +25,7 @@ background
   s6-setsid
   redirfd -w 1 /run/service/s6-svscan.log/fifo
   fdmove -c 2 1
-  /etc/s6/init/rc.init
+  /etc/slew/init/rc.init
 }
 unexport !
 

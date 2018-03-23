@@ -1,5 +1,5 @@
-Usage of s6.rc
-==============
+Usage of slew
+=============
 
 Introduction
 ------------
@@ -37,7 +37,7 @@ is, while useful for writing stage 1/3 scripts, not really expressive enough for
 some `./run' / `./finish' scripts (eg. those for instanced supervision), let
 alone oneshots which are often even more complex.  For this reason, the shell is
 chosen as the language for most scripts in this project; and to avoid some
-problems inherent in the Bourne shell [4], s6.rc uses rc(1).
+problems inherent in the Bourne shell [4], slew uses rc(1).
 
 [4] <https://skarnet.org/cgi-bin/archive.cgi?2:msp:1375:lbimjlgggoajjofdbeoc>.
 
@@ -45,38 +45,38 @@ problems inherent in the Bourne shell [4], s6.rc uses rc(1).
 The booting and halting scripts
 -------------------------------
 
-The `init' and `run' directories contain the init system of s6.rc, and shall be
-installed at `/etc/s6'.  The actual stage 1 init executable is `init/rc.boot',
+The `init' and `run' directories contain the init system of slew, and shall be
+installed at `/etc/slew'.  The actual stage 1 init executable is `init/rc.boot',
 which can be linked from `/sbin/init' or specified on the kernel command line.
 `rc.boot' exec()s into `s6-svscan' (stage 2), which exec()s into its `finish'
 script linked to `init/rc.halt', the stage 3 executable, on shutdown.  At the
 beginning and end of stage 2, `init/rc.init' and `init/rc.fin' are executed
 respectively.  The `crash' script of `s6-svscan' is linked to `bin/rc.crash'.
 
-Before exec()ing into `s6-svscan', `rc.boot' copies everything in `/etc/s6/run'
-into `/run' as is, and sets the environment using `s6-envdir' according to
-the `/etc/s6/env' directory if the latter exists.  The catch-all logger is
-located at `/run/service/s6-svscan.log', and logs to `/run/uncaught-logs' as the
-`catchall' user; therefore, it is recommended to create the
-`/etc/s6/run/uncaught-logs' directory with ownership `catchall:adm' and
-permission '0750'.  By the way, apart from doing other well-known tasks,
+Before exec()ing into `s6-svscan', `rc.boot' copies everything in
+`/etc/slew/run' into `/run' as is, and sets the environment using `s6-envdir'
+according to the `/etc/slew/env' directory if the latter exists.  The catch-all
+logger is located at `/run/service/s6-svscan.log', and logs to
+`/run/uncaught-logs' as the `catchall' user; therefore, it is recommended to
+create the `/etc/slew/run/uncaught-logs' directory with ownership `catchall:adm'
+and permission '0750'.  By the way, apart from doing other well-known tasks,
 `rc.halt' also saves `/run/uncaught-logs/current' to the `/var/log/init'
 directory before unmounting filesystems.
 
 `rc.init' requires the compiled s6-rc service database to be located at (or
-linked to) `/etc/s6/db/compiled', and to contain two bundles called `default'
+linked to) `/etc/slew/db/compiled', and to contain two bundles called `default'
 and `consoles'; `consoles' should contain the getty services, and `default'
 should contain all the rest that are expected to be started automatically during
 booting.
 
-Unlike s6-linux-init, s6.rc follows the busybox init(8) signal convention, and
+Unlike s6-linux-init, slew follows the busybox init(8) signal convention, and
 `SIGUSR1' and `SIGUSR2' sent to `s6-svscan' will respectively trigger halt and
 poweroff, instead of the other way around.  Additionally, if some service(s)
 fail to start during booting, and `/run/reboot' exists, `rc.init' will trigger
 reboot automatically; this can be useful for certain scenarios (eg. when
 required by fsck(8)) where automatic reboot is desirable.
 
-s6.rc uses a configuration file, `lib/s6.rc', that controls some (but not all)
+slew uses a configuration file, `lib/slew.rc', that controls some (but not all)
 aspects of init/rc system in a centralised way (like `rc.conf' in some other
 init/rc systems); cf. the comments therein for detailed usage of it.
 
@@ -84,27 +84,27 @@ init/rc systems); cf. the comments therein for detailed usage of it.
 Service definitions and the preprocessor
 ----------------------------------------
 
-The `base', `main' and `lib' directory contains the service definitions, the
+The `base', `main' and `lib' directories contain the service definitions, the
 preprocessor, as well as ancillary utilities and configuration files; they shall
-be installed at `/etc/s6', perhaps with unused service definitions (and related
-files) omitted.  The `base' directory contains the basic definitions,
+be installed at `/etc/slew', perhaps with unused service definitions (and
+related files) omitted.  The `base' directory contains the basic definitions,
 which are linked into the `main' directory; the `lib' directory contains the
-preprocessor, ancillary utilities and configuration files including `s6.rc'.
+preprocessor, ancillary utilities and configuration files including `slew.rc'.
 The `misc' directory contains package-specific preprocessing passes, and files
-that are not to be installed into `/etc/s6'.
+that are not to be installed into `/etc/slew'.
 
 The `main' directory additionally contains the bundles `machine', `services'
 `default', `consoles', and some bundles which are used by the preprocessor.  The
-`default' bundle shipped with s6.rc depends on `machine' and `services', as well
+`default' bundle shipped with slew depends on `machine' and `services', as well
 as the `local' oneshot which itself depends on `machine' and `services'; in this
-way, s6.rc can somewhat emulate sysvinit runlevels.  In order to customise the
+way, slew can somewhat emulate sysvinit runlevels.  In order to customise the
 list of automatically started services, the user would most often need to modify
 the contents of the `services' bundle; by the way, the `network' and `local'
 oneshots in `base' are also among the most customised services.
 
 `lib/prep.rc' is the service definition preprocessor, and is invoked like:
-  # cp -a /etc/s6/main /etc/s6/main.prep
-  # /etc/s6/lib/prep.rc /etc/s6/lib/prep /etc/s6/main.prep
+  # cp -a /etc/slew/main /etc/slew/main.prep
+  # /etc/slew/lib/prep.rc /etc/slew/lib/prep /etc/slew/main.prep
 What `prep.rc' does is simply running, on the $2 directory, all executables with
 the `.rc' extension in the $1 directory in lexical order, and each script is a
 single preprocessing pass; if it finishes successfully, the $2 directory would
@@ -119,7 +119,7 @@ of symbolic links when referencing external files and directories; to understand
 the rationale for this, cf. `lib/prep/10-multi.rc'.  Finally, cf. the comments
 in individual passes for their detailed usage.
 
-Along with the preprocessor, also shipped with s6.rc are "libraries" located
+Along with the preprocessor, also shipped with slew are "libraries" located
 in `lib' that abstract common patterns, which would otherwise result in
 boilerplates in the service definitions: eg. see `lib/srv.rc' (in combination
 with eg. `base/getty.') for how to do instanced supervision, and `lib/rate.rc'
@@ -127,7 +127,7 @@ with eg. `base/getty.') for how to do instanced supervision, and `lib/rate.rc'
 services that can sometimes repeatedly exit due to transient failures.
 
 Although s6-rc bundles can be used to implement polymorphism (eg. a `keymap'
-bundle that contains either `keymap.kbd' or `keymap.busybox'), s6.rc prefers to
+bundle that contains either `keymap.kbd' or `keymap.busybox'), slew prefers to
 use links (eg. `main/keymap' linked to `base/keymap.busybox'), because service
 directories in `base' are linked into `main' anyway.  However, a bundle might
 still be necessary when it provides a polymorphic interface that happens to not
@@ -146,15 +146,15 @@ symptoms; avoid them, and your system will probably be well.
 
 * Due to its implementation [5], s6 does not handle backward time jump well,
   and requires the clock to be not too far in the future when it is running.
-  Therefore, s6.rc initialises the system clock in `rc.boot' instead of the
+  Therefore, slew initialises the system clock in `rc.boot' instead of the
   beginning of stage 2.  Of course, it is also essential for the user to set
-  $clock correctly in `s6.rc'.
+  $clock correctly in `slew.rc'.
 
 [5] <https://skarnet.org/cgi-bin/archive.cgi?2:mss:1399:fgnhnlmchokkkmcfbahd>.
 
 * As noted in [6], a live s6-rc service database should not be tampered with,
   and it is wrong to delete the live database, replace it with a new one, and
-  then run `s6-rc-update /etc/s6/db/compiled'.  For an alternative, see
+  then run `s6-rc-update /etc/slew/db/compiled'.  For an alternative, see
   `lib/build.rc'; but note that the scripts depends on some internal
   details of s6-rc service databases, which are undocumented as of now.
 
@@ -163,7 +163,7 @@ symptoms; avoid them, and your system will probably be well.
 * Due to some implementation details [7] of `redirfd -wnb', it must be invoked
   before `background' in `rc.boot', or race conditions might occur.  (Users who
   use `rc.boot' as is will not encounter this issue, but distributions might
-  customise the scripts in s6.rc, so this note is still necessary.)
+  customise the scripts in slew, so this note is still necessary.)
 
 [7] <https://git.skarnet.org/cgi-bin/cgit.cgi/s6-linux-init/commit/?id=60bd7b90>.
 
@@ -173,7 +173,7 @@ The following are not strictly related to s6/s6-rc, but might still be useful:
   `base/syslog.ucspi') is an extremely elegant idea, but it depends on syslog()
   using `SOCK_STREAM' sockets, which is not the case with musl [8].  For this
   reason, alternative services (eg. `base/syslog.busybox') are also shipped with
-  s6.rc.
+  slew.
 
 [8] <http://www.openwall.com/lists/musl/2015/08/10/1>.
 
@@ -187,5 +187,5 @@ The following are not strictly related to s6/s6-rc, but might still be useful:
 
 * Certain daemons (eg. openssh) use setproctitle() or similar tricks to change
   the title of their processes, and this seems to be broken with an empty
-  enviroment.  Therefore, all longruns in s6.rc are run with $PATH preserved.
+  enviroment.  Therefore, all longruns in slew are run with $PATH preserved.
 

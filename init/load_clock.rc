@@ -1,6 +1,6 @@
 #!/bin/rc
 
-. /etc/s6/lib/s6.rc
+. /etc/slew/lib/slew.rc
 dmesg -n 1
 
 if (~ $clock /*) {

@@ -1,10 +1,10 @@
 #!/bin/rc
 
-. /etc/s6/lib/s6.rc
+. /etc/slew/lib/slew.rc
 
 fn init {
 	~ $quiet 1 && con=consoles
-	s6-rc-init -c /etc/s6/db/compiled /run/service || exit 2
+	s6-rc-init -c /etc/slew/db/compiled /run/service || exit 2
 	echo '* init: starting services...'
 	if (s6-rc -v2 -t20000 -u change default $con) {
 		echo '* init: services started'

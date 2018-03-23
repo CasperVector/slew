@@ -1,8 +1,8 @@
 #!/bin/rc -e
 
 exec >[2=1]
-. /etc/s6/lib/srv.rc
-. /etc/s6/lib/rate.rc
+. /etc/slew/lib/srv.rc
+. /etc/slew/lib/rate.rc
 
 rate_run
 echo 'starting ssh port forward on' $name

@@ -1,8 +1,8 @@
 #!/bin/rc -e
 #
 # Creates `up' / `down' for oneshots with `prep/up' / `prep/down': assuming
-# `.prep/base' specifies `/etc/s6/main', `srv/prep/up' will make `srv/up' say
-# `/etc/s6/main/srv/prep/up'.
+# `.prep/base' specifies `/etc/slew/main', `srv/prep/up' will make `srv/up' say
+# `/etc/slew/main/srv/prep/up'.
 
 ~ $#* 1 && cd $1 || false
 base=`{cat .prep/base}

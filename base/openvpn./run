@@ -1,6 +1,6 @@
 #!/bin/rc -e
 
 exec >[2=1]
-. /etc/s6/lib/srv.rc
+. /etc/slew/lib/srv.rc
 exec emptyenv -p openvpn /etc/openvpn/$name.conf
 

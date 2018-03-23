@@ -20,11 +20,11 @@ foreground { killall5 -KILL }
 wait { }
 
 foreground { echo "* halt: saving clock and uncaught logs..." }
-foreground { /etc/s6/init/save_log.rc 6 5000000 }
-foreground { /etc/s6/init/save_clock.rc }
+foreground { /etc/slew/init/save_log.rc 6 5000000 }
+foreground { /etc/slew/init/save_clock.rc }
 
 foreground { echo "* halt: unmounting filesystems, disabling swap..." }
-foreground { /etc/s6/init/umount.rc }
+foreground { /etc/slew/init/umount.rc }
 foreground { swapoff -a }
 
 foreground { echo "* halt: remounting rootfs read-only..." }
