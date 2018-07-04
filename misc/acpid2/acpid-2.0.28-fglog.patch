@@ -1,4 +1,4 @@
-License: same as the license of the upstream package.
+Licence: same as the licence of the upstream package.
 
 diff -ur acpid.8 acpid.8
 --- acpid.8	2014-08-22 21:12:22.029473237 +0800

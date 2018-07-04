@@ -1,4 +1,4 @@
-License: same as the license of the upstream package.
+Licence: same as the licence of the upstream package.
 
 --- src/message.c	2016-05-05 00:56:44.000000000 +0800
 +++ src/message.c	2018-02-06 00:28:20.417957767 +0800
