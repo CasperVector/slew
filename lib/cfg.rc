@@ -1,0 +1,8 @@
+#!/bin/rc
+# Defaults in case of missing `slew.rc'.
+
+quiet=0
+keymap=us
+clock=--utc
+. /etc/slew/lib/slew.rc
+

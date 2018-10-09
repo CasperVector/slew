@@ -1,5 +1,5 @@
 #!/bin/rc -e
 
-. /etc/slew/lib/slew.rc
+. /etc/slew/lib/cfg.rc
 loadkeys -q -u $keymap
 

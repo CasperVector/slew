@@ -1,6 +1,6 @@
 #!/bin/rc -e
 
-. /etc/slew/lib/slew.rc
+. /etc/slew/lib/cfg.rc
 if (~ $clock /*) {
 	expr `{date +%s} + 9 > $clock || true
 } else if (! ~ $#clock 0) hwclock $clock --systohc
