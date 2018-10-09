@@ -16,5 +16,5 @@ for (args in \
 	'/proc/self/fd/1 /dev/stdout' \
 	'/proc/self/fd/2 /dev/stderr' \
 ) ln -snf `{echo $args}
-hostname `{cat /etc/hostname}
+hostname `{cat /etc/hostname || true}
 

@@ -1,4 +1,4 @@
-#!/bin/rc -e
+#!/bin/rc
 
 mkdir -p /var/lib/misc
 if ([ -f /var/lib/misc/random-seed ]) {
@@ -6,4 +6,5 @@ if ([ -f /var/lib/misc/random-seed ]) {
 } else {
 	install -m 0600 /dev/null /var/lib/misc/random-seed
 }
+exit 0
 

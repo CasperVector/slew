@@ -1,4 +1,4 @@
-#!/bin/rc -e
+#!/bin/rc
 
 for (f in \
 	/etc/sysctl.d/*.conf \
@@ -6,4 +6,5 @@ for (f in \
 	/lib/sysctl.d/*.conf \
 	/etc/sysctl.conf \
 ) if ([ -f $f ]) sysctl -qp $f
+exit 0
 

@@ -1,4 +1,4 @@
-#!/bin/rc -e
+#!/bin/rc
 
 . /etc/slew/lib/cfg.rc
 zcat /etc/keymap/$keymap.bmap.gz | loadkmap

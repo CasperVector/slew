@@ -135,6 +135,18 @@ require anything to be run (eg. `base/drivers.udev' in comparison with
 `base/drivers.mdev'), and non-polymorphic dependencies (eg. `devices.udev' /
 `devices.mdev') need to be explicitly linked into `main'.
 
+Most scripts shipped with slew are quite strict regarding system or human
+errors, eg. most executable `.rc' scripts use the `/bin/rc -e' shebang line;
+however, in order to provide a reasonable level of fault tolerance, some scripts
+are intentionally more permissive.  The current rules are that:
+* `./run' scripts for longruns should, in principle, be strict.
+* Services critical for the system and hard dependencies of other services
+  (roughly equivalent to the `need'ed services in OpenRC) should be strict.
+* If some failures in certain parts of the supposedly strict scripts can be
+  nonfatal, these failures shall be handled explicitly, cf. `origin' and `fsck'.
+* Soft dependencies of other services (roughly equivalent to the `after'ed
+  services in OpenRC) can be more permissive.
+
 
 Mistakes to avoid
 -----------------

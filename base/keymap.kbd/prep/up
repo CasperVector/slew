@@ -1,4 +1,4 @@
-#!/bin/rc -e
+#!/bin/rc
 
 . /etc/slew/lib/cfg.rc
 loadkeys -q -u $keymap
