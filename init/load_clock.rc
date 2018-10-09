@@ -1,6 +1,7 @@
 #!/bin/rc
 
 . /etc/slew/lib/cfg.rc
+. /etc/slew/lib/kcmd.rc
 dmesg -n 1
 
 if (~ $clock /*) {
