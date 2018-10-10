@@ -1,3 +1,5 @@
 #!/bin/rc
+
 alsactl store
+exit 0
 

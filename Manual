@@ -144,8 +144,8 @@ are intentionally more permissive.  The current rules are that:
   (roughly equivalent to the `need'ed services in OpenRC) should be strict.
 * If some failures in certain parts of the supposedly strict scripts can be
   nonfatal, these failures shall be handled explicitly, cf. `origin' and `fsck'.
-* Soft dependencies of other services (roughly equivalent to the `after'ed
-  services in OpenRC) can be more permissive.
+* Inessential services or soft dependencies of other services (roughly
+  equivalent to the `after'ed services in OpenRC) can be more permissive.
 
 
 Mistakes to avoid
