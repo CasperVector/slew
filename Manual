@@ -133,7 +133,9 @@ directories in `base' are linked into `main' anyway.  However, a bundle might
 still be necessary when it provides a polymorphic interface that happens to not
 require anything to be run (eg. `base/drivers.udev' in comparison with
 `base/drivers.mdev'), and non-polymorphic dependencies (eg. `devices.udev' /
-`devices.mdev') need to be explicitly linked into `main'.
+`devices.mdev') need to be explicitly linked into `main'.  By the way, for an
+example on how to implement polymorphic "methods", cf. the `lib/fn' directory,
+the `udhcpc' service and the `misc/wpa_cli.rc' script.
 
 Most scripts shipped with slew are quite strict regarding system or human
 errors, eg. most executable `.rc' scripts use the `/bin/rc -e' shebang line;

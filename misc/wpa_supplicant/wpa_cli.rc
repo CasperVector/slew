@@ -5,10 +5,12 @@ if (! ~ $#* 2) {
 	echo 'wtf?'
 	exit 1
 }
-[ -d /run/service/dhcpc.$1 ] || exit 0
+srv=/run/service/dhcpc.$1
+
+[ -d $srv ] || exit 0
 switch ($2) {
-	case CONNECTED; s6-svc -1 /run/service/dhcpc.$1
-	case DISCONNECTED; s6-svc -2 /run/service/dhcpc.$1
+	case CONNECTED; $srv/data/dhcpc-renew $srv
+	case DISCONNECTED; $srv/data/dhcpc-release $srv
 	case *; echo 'wtf?'; exit 1
 }
 
