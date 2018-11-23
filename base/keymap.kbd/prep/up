@@ -2,4 +2,5 @@
 
 . /etc/slew/lib/cfg.rc
 loadkeys -q -u $keymap
+exit 0
 

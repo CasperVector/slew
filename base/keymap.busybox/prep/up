@@ -2,4 +2,5 @@
 
 . /etc/slew/lib/cfg.rc
 zcat /etc/keymap/$keymap.bmap.gz | loadkmap
+exit 0
 
