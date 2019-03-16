@@ -3,24 +3,23 @@
 cd /
 redirfd -w 1 /dev/console
 fdmove -c 2 1
+foreground { s6-svc -a /run/service/s6-svscan.log }
 foreground { s6-svc -X /run/service/s6-svscan.log }
 wait -r { }
 
 foreground { echo "* halt: syncing disks..." }
 foreground { sync }
 
-foreground { echo "* halt: sending SIGTERM/SIGCONT/SIGHUP to processes..." }
+foreground { echo "* halt: sending SIGTERM/SIGCONT to processes..." }
 foreground { killall5 -TERM }
 foreground { killall5 -CONT }
-foreground { killall5 -HUP }
 foreground { sleep 2 }
 
 foreground { echo "* halt: sending SIGKILL to processes..." }
 foreground { killall5 -KILL }
 wait { }
 
-foreground { echo "* halt: saving clock and uncaught logs..." }
-foreground { /etc/slew/init/save_log.rc 6 5000000 }
+foreground { echo "* halt: saving clock..." }
 foreground { /etc/slew/init/save_clock.rc }
 
 foreground { echo "* halt: unmounting filesystems, disabling swap..." }

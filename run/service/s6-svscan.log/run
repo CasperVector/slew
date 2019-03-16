@@ -6,5 +6,7 @@ fdmove -c 2 1 \
 redirfd -rnb 0 fifo \
 s6-setuidgid catchall \
 emptyenv -p \
-s6-log -bp t T /run/uncaught-logs
+s6-log -bp t T \
+	!'/etc/slew/init/save_log.rc /var/log/init 6 5000000' \
+	/run/uncaught-logs
 
