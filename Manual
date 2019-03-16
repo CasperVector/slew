@@ -59,9 +59,13 @@ according to the `/etc/slew/env' directory if the latter exists.  The catch-all
 logger is located at `/run/service/s6-svscan.log', and logs to
 `/run/uncaught-logs' as the `catchall' user; therefore, it is recommended to
 create the `/etc/slew/run/uncaught-logs' directory with ownership `catchall:adm'
-and permission '0750'.  By the way, apart from doing other well-known tasks,
-`rc.halt' also saves `/run/uncaught-logs/current' to the `/var/log/init'
-directory before unmounting filesystems.
+and permission '0750'.
+
+Apart from doing other well-known tasks, `rc.halt' also triggers the
+`init/save_log.rc' s6-log processor to save logs from `/run/uncaught-logs' to
+the `/var/log/init' directory before unmounting filesystems.  The `local'
+oneshot shipped with slew (see below for more details) takes care of triggering
+`init/save_log.rc' after the booting procedure is mostly completed.
 
 `rc.init' requires the compiled s6-rc service database to be located at (or
 linked to) `/etc/slew/db/compiled', and to contain two bundles called `default'
