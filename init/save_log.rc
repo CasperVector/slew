@@ -9,8 +9,8 @@ fn rotate {
 }
 
 if (! [ -d $1 ]) { install -d -o root -g adm -m 0750 $1 || exec cat }
-for (f in `{ls | grep '^@'}) {
-	cat $f >> $1/0 && { rm $f; rotate $* } || exec cat
+for (f in @*) if ([ -f $f ]) {
+	{ cat $f >> $1/0; rm $f; rotate $* } || exec cat
 }
 cat >> $1/0 && { rotate $*; ret=0 } || ret=1
 exit $ret
