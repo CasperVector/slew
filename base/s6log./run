@@ -9,5 +9,5 @@ args=(n6 s5000000 !gzip t T $logd)
 . ./data/s6-log.rc
 
 [ -d $logd ] || install -d -o $logu -g adm -m 0750 $logd
-exec s6-setuidgid $logu emptyenv -p s6-log -d 3 $args
+exec s6-setuidgid $logu emptyenv -p s6-log $args
 
