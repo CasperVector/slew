@@ -11,12 +11,12 @@ foreground { echo "* halt: syncing disks..." }
 foreground { sync }
 
 foreground { echo "* halt: sending SIGTERM/SIGCONT to processes..." }
-foreground { killall5 -TERM }
-foreground { killall5 -CONT }
+foreground { killall5 -15 }
+foreground { killall5 -18 }
 foreground { sleep 2 }
 
 foreground { echo "* halt: sending SIGKILL to processes..." }
-foreground { killall5 -KILL }
+foreground { killall5 -9 }
 wait { }
 
 foreground { echo "* halt: saving clock..." }
