@@ -7,7 +7,7 @@ fn echo_ret {
 }
 
 fn rate_run {
-	if (! [ -d $priv ]) install -d -o root -g adm -m 0750 $priv
+	[ -d $priv ] || install -d -o root -g adm -m 0750 $priv
 	if ([ -f $priv/delay ]) sleep `{cat $priv/delay}
 	date +%s > $priv/date
 }
