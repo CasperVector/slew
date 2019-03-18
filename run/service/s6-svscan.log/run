@@ -1,8 +1,7 @@
 #!/bin/rc -e
 
-for (logd in /run/uncaught-logs /var/log/init) {
-	[ -d $logd ] || install -d -o catchlog -g adm -m 0750 $logd
-}
+[ -d /run/uncaught-logs ] ||
+	install -d -o catchlog -g adm -m 0750 /run/uncaught-logs
 
 exec \
 redirfd -w 1 /dev/console \

@@ -1,5 +1,6 @@
 #!/bin/rc
 
+[ -d /var/log/init ] || install -d -o catchlog -g adm -m 0750 /var/log/init
 s6-svc -a /run/service/s6-svscan.log
 exit 0
 
