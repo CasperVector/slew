@@ -57,9 +57,7 @@ Before exec()ing into `s6-svscan', `rc.boot' copies everything in
 `/etc/slew/run' into `/run' as is, and sets the environment using `s6-envdir'
 according to the `/etc/slew/env' directory if the latter exists.  The catch-all
 logger is located at `/run/service/s6-svscan.log', and logs to
-`/run/uncaught-logs' as the `catchlog' user; therefore, it is recommended to
-create the `/etc/slew/run/uncaught-logs' directory with ownership `catchlog:adm'
-and permission '0750'.
+`/run/uncaught-logs' as the `catchlog' user.
 
 Apart from doing other well-known tasks, `rc.halt' also triggers the
 `init/save_log.rc' s6-log processor to save logs from `/run/uncaught-logs' to

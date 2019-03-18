@@ -8,7 +8,6 @@ fn rotate {
 	}
 }
 
-if (! [ -d $1 ]) { install -d -o root -g adm -m 0750 $1 || exec cat }
 for (f in @*) if ([ -f $f ]) {
 	{ cat $f >> $1/0; rm $f; rotate $* } || exec cat
 }
