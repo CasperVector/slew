@@ -19,7 +19,13 @@ foreground { echo "* halt: sending SIGKILL to processes..." }
 foreground { killall5 -9 }
 wait { }
 
-foreground { echo "* halt: saving clock..." }
+foreground { echo "* halt: saving clock and stray logs..." }
+foreground {
+	cd /run/uncaught-logs
+	redirfd -r 0 current
+	redirfd -w 1 /dev/null
+	/etc/slew/init/save_log.rc /var/log/init 6 5000000
+}
 foreground { /etc/slew/init/save_clock.rc }
 
 foreground { echo "* halt: unmounting filesystems, disabling swap..." }
