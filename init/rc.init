@@ -19,7 +19,7 @@ fn init {
 ~ $quiet 1 && @ init || { init >[2=1] | tee /dev/console }
 switch ($status(1)) {
 case 1
-	exec reboot
+	exec kill -TERM 1
 case 2
 	exec > /dev/console >[2=1]
 	echo '! init: s6-rc-init failure; enabling rescue shell...'
