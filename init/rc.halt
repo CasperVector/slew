@@ -21,10 +21,10 @@ wait { }
 
 foreground { echo "* halt: saving clock and stray logs..." }
 foreground {
-	cd /run/uncaught-logs
-	redirfd -r 0 current
-	redirfd -w 1 /dev/null
-	/etc/slew/init/save_log.rc /var/log/init 6 5000000
+  cd /run/uncaught-logs
+  redirfd -r 0 current
+  redirfd -w 1 /dev/null
+  /etc/slew/init/save_log.rc /var/log/init 6 5000000
 }
 foreground { /etc/slew/init/save_clock.rc }
 

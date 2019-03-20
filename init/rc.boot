@@ -20,8 +20,7 @@ if { mkfifo -m 600 /run/service/s6-svscan.log/fifo }
 s6-envdir -I /etc/slew/env
 
 redirfd -wnb 1 /run/service/s6-svscan.log/fifo
-background
-{
+background {
   s6-setsid
   redirfd -w 1 /run/service/s6-svscan.log/fifo
   fdmove -c 2 1
