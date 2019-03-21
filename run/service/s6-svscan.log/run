@@ -1,11 +1,10 @@
 #!/bin/rc -e
 
+exec > /dev/console >[2=1]
 [ -d /run/uncaught-logs ] ||
 	install -d -o catchlog -g adm -m 0750 /run/uncaught-logs
 
 exec \
-redirfd -w 1 /dev/console \
-fdmove -c 2 1 \
 redirfd -rnb 0 fifo \
 s6-setuidgid catchlog \
 emptyenv -p \
