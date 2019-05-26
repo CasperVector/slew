@@ -1,3 +1,0 @@
-#!/bin/rc
-exec s6-svc -2 $*
-

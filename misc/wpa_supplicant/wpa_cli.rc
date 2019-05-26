@@ -10,7 +10,7 @@ srv=/run/service/dhcpc.$1
 [ -d $srv ] || exit 0
 switch ($2) {
 	case CONNECTED; $srv/data/dhcpc-renew $srv
-	case DISCONNECTED; $srv/data/dhcpc-release $srv
+	case DISCONNECTED;  # No-op.
 	case *; echo 'wtf?'; exit 1
 }
 
