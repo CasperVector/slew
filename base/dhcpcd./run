@@ -1,0 +1,6 @@
+#!/bin/rc -e
+
+exec >[2=1]
+. /etc/slew/lib/srv.rc
+exec emptyenv -p dhcpcd -Bj /dev/null $name
+
