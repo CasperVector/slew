@@ -1,3 +1,6 @@
-#!/bin/rc
-exec >[2=1] emptyenv -p udevd
+#!/bin/rc -e
+
+exec >[2=1]
+./data/retrigger.exl
+exec emptyenv -p udevd
 

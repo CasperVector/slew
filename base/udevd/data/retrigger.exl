@@ -1,0 +1,8 @@
+#!/bin/execlineb -P
+
+background {
+  foreground { sleep 2 }
+  foreground { udevadm trigger --action=add --type=subsystems }
+  foreground { udevadm trigger --action=add --type=devices }
+}
+
