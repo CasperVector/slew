@@ -51,7 +51,7 @@ which can be linked from `/sbin/init' or specified on the kernel command line.
 `rc.boot' exec()s into `s6-svscan' (stage 2), which exec()s into its `finish'
 script linked to `init/rc.halt', the stage 3 executable, on shutdown.  At the
 beginning and end of stage 2, `init/rc.init' and `init/rc.fin' are executed
-respectively.  The `crash' script of `s6-svscan' is linked to `bin/rc.crash'.
+respectively.  The `crash' script of `s6-svscan' is linked to `init/rc.crash'.
 
 Before exec()ing into `s6-svscan', `rc.boot' copies everything in
 `/etc/slew/run' into `/run' as is, and sets the environment using `s6-envdir'
