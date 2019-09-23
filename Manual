@@ -160,11 +160,11 @@ nevertheless, sometimes the symptoms are quite obscure and it is not easy to
 find the culprit at once.  Here are some common mistakes that might have obscure
 symptoms; avoid them, and your system will probably be well.
 
-* Due to its implementation [5], s6 does not handle backward time jump well,
-  and requires the clock to be not too far in the future when it is running.
-  Therefore, slew initialises the system clock in `rc.boot' instead of the
-  beginning of stage 2.  Of course, it is also essential for the user to set
-  $clock correctly in `slew.rc'.
+* Due to its implementation [5], s6 before version 2.9.0.0 did not handle
+  backward time jump well, and required the clock to be not too far in the
+  future when it was running.  Therefore, slew initialises the system clock in
+  `rc.boot' instead of the beginning of stage 2.  Of course, it is also
+  essential for the user to set $clock correctly in `slew.rc'.
 
 [5] <https://skarnet.org/cgi-bin/archive.cgi?2:mss:1399:fgnhnlmchokkkmcfbahd>.
 
