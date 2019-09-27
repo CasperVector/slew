@@ -54,9 +54,11 @@ beginning and end of stage 2, `init/rc.init' and `init/rc.fin' are executed
 respectively.  The `crash' script of `s6-svscan' is linked to `init/rc.crash'.
 
 Before exec()ing into `s6-svscan', `rc.boot' copies everything in
-`/etc/slew/run' into `/run' as is, and sets the environment using `s6-envdir'
-according to the `/etc/slew/env' directory if the latter exists.  The catch-all
-logger is located at `/run/service/s6-svscan.log', and logs to
+`/etc/slew/run' into `/run' as is (so if your distribution needs `/run/sshd'
+for sshd to run, you can create an empty `sshd' directory in `/etc/slew/run',
+perhaps with necessary permission restrictions), and sets the environment using
+`s6-envdir' according to the `/etc/slew/env' directory if the latter exists.
+The catch-all logger is located at `/run/service/s6-svscan.log', and logs to
 `/run/uncaught-logs' as the `catchlog' user.
 
 Apart from doing other well-known tasks, `rc.halt' also triggers the
@@ -92,8 +94,6 @@ be installed at `/etc/slew', perhaps with unused service definitions (and
 related files) omitted.  The `base' directory contains the basic definitions,
 which are linked into the `main' directory; the `lib' directory contains the
 preprocessor, ancillary utilities and configuration files including `slew.rc'.
-The `misc' directory contains package-specific preprocessing passes, and files
-that are not to be installed into `/etc/slew'.
 
 The `main' directory additionally contains the bundles `machine', `services'
 `default', `consoles', and some bundles which are used by the preprocessor.  The
@@ -129,6 +129,21 @@ with eg. `base/getty.') for how to do instanced supervision, and `lib/rate.rc'
 (in combination with eg. `base/sshhole.') for how to play cybernetics with
 services that can sometimes repeatedly exit due to transient failures.
 
+
+Package-specific files and some slew conventions
+------------------------------------------------
+
+The `pkg' directory contains package-specific files, eg. `pkg/openvpn' for files
+related to openvpn; the structure of these package directories resemble the
+`/etc/slew', except for their `misc' subdirectories, which contain ancillary
+files (like patches and non-slew configuration files) and are not to be
+installed into `/etc/slew'.  The service definitions under the root of this
+repository are the core services provided by slew, and assume the presence of
+busybox (along with necessary applets) on the system; services named `firewall'
+and `sshd' are set as optional dependencies (cf. `lib/prep/80-odep.rc')
+respectively for `machine' and `services', and can be respectively linked to
+`nftables' and `openssh' when they are installed.
+
 Although s6-rc bundles can be used to implement polymorphism (eg. a `keymap'
 bundle that contains either `keymap.kbd' or `keymap.busybox'), slew prefers to
 use links (eg. `main/keymap' linked to `base/keymap.busybox'), because service
@@ -138,7 +153,7 @@ require anything to be run (eg. `base/drivers.udev' in comparison with
 `base/drivers.mdev'), and non-polymorphic dependencies (eg. `devices.udev' /
 `devices.mdev') need to be explicitly linked into `main'.  By the way, for an
 example on how to implement polymorphic "methods", cf. the `lib/fn' directory,
-the `udhcpc' service and the `misc/wpa_cli.rc' script.
+the `udhcpc' service and the `pkg/wpa_supplicant/misc/wpa_cli.rc' script.
 
 Most scripts shipped with slew are quite strict regarding system or human
 errors, eg. most executable `.rc' scripts use the `/bin/rc -e' shebang line;
