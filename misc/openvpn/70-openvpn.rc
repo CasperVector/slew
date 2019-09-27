@@ -1,5 +1,5 @@
 #!/bin/rc -e
-# Adds `dhcpc.vpn0' to the `ordep' of `openvpn.srv' if it uses `vpn0'.
+# Adds `dhcpc.vpn0' to the `ordep' of `openvpn.srv' if it uses device `vpn0'.
 
 ~ $#* 1 && cd $1 || false
 for (srv in `{ls | sed -nr 's/^openvpn\.([^.]+)$/\1/p'}) {
