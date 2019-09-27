@@ -118,8 +118,9 @@ or in the `prep' subdirectory of a service directory in $1 (for per-service
 settings).  It is also recommended that every pass chdir()s to its $1, and use
 plain text files containing text like `../base/s6log.' (relative to $1) instead
 of symbolic links when referencing external files and directories; to understand
-the rationale for this, cf. `lib/prep/10-multi.rc'.  Finally, cf. the comments
-in individual passes for their detailed usage.
+the rationale for this, cf. `lib/prep/10-multi.rc'.  For the detailed usage of
+individual passes, use (cf. `lib/prepdoc.rc' for the documentation format):
+  # /etc/slew/lib/prepdoc.rc /etc/slew/lib/prep
 
 Along with the preprocessor, also shipped with slew are "libraries" located
 in `lib' that abstract common patterns, which would otherwise result in
@@ -170,9 +171,9 @@ symptoms; avoid them, and your system will probably be well.
 
 * As noted in [6], a live s6-rc service database should not be tampered with,
   and it is wrong to delete the live database, replace it with a new one, and
-  then run `s6-rc-update /etc/slew/db/compiled'.  For an alternative, see
-  `lib/build.rc'; but note that the scripts depends on some internal
-  details of s6-rc service databases, which are undocumented as of now.
+  then run `s6-rc-update /etc/slew/db/compiled'.  For an alternative, cf.
+  `lib/build.rc'; but note that the scripts depends on some internal details
+  of s6-rc service databases, which are undocumented as of now.
 
 [6] <https://skarnet.org/software/s6-rc/s6-rc-compile.html>.
 

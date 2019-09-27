@@ -1,0 +1,17 @@
+#!/bin/rc -e
+#
+# Consecutive comment lines (excluding the shebang line and immediately
+# following empty comments) in the beginning of a preprocessor pass file are
+# considered as its documentation.
+
+~ $#* 1 && cd $1 || exit 1
+for (pass in *.rc) {
+	echo $pass:
+	awk '{
+		if (!/^#/) exit
+		if (!/^#!/ && !/^#$/) pr = 1
+		if (pr) print
+	}' $pass | sed 's/^#/ /'
+	echo
+}
+
