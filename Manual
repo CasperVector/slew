@@ -39,7 +39,7 @@ alone oneshots which are often even more complex.  For this reason, the shell is
 chosen as the language for most scripts in this project; and to avoid some
 problems inherent in the Bourne shell [4], slew uses rc(1).
 
-[4] <https://skarnet.org/cgi-bin/archive.cgi?2:msp:1375:lbimjlgggoajjofdbeoc>.
+[4] <https://skarnet.org/cgi-bin/archive.cgi?2:mss:1374>.
 
 
 The booting and halting scripts
@@ -182,7 +182,7 @@ symptoms; avoid them, and your system will probably be well.
   `rc.boot' instead of the beginning of stage 2.  Of course, it is also
   essential for the user to set $clock correctly in `slew.rc'.
 
-[5] <https://skarnet.org/cgi-bin/archive.cgi?2:mss:1399:fgnhnlmchokkkmcfbahd>.
+[5] <https://skarnet.org/cgi-bin/archive.cgi?2:mss:1399>.
 
 * As noted in [6], a live s6-rc service database should not be tampered with,
   and it is wrong to delete the live database, replace it with a new one, and
