@@ -184,11 +184,11 @@ symptoms; avoid them, and your system will probably be well.
 
 [5] <https://skarnet.org/cgi-bin/archive.cgi?2:mss:1399>.
 
-* As noted in [6], a live s6-rc service database should not be tampered with,
-  and it is wrong to delete the live database, replace it with a new one, and
-  then run `s6-rc-update /etc/slew/db/compiled'.  For an alternative, cf.
-  `lib/build.rc'; but note that the scripts depends on some internal details
-  of s6-rc service databases, which are undocumented as of now.
+* As was noted in [6], a live s6-rc service database should not be tampered
+  with, and it is wrong to delete the live database, replace it with a new one,
+  and then run `s6-rc-update /etc/slew/db/compiled'.  For an alternative, cf.
+  `lib/build.rc'; but note that the scripts depend on some internal details of
+  s6-rc service databases, which are undocumented as of now.
 
 [6] <https://skarnet.org/software/s6-rc/s6-rc-compile.html>.
 

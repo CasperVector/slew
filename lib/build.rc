@@ -5,7 +5,7 @@
 # This script copies `/etc/slew/main' to `/etc/slew/prep.main', preprocesses it,
 # and compiles it to `/etc/slew/db/main'; `/etc/slew/db/main' will be moved to
 # `/etc/slew/db/old.main' if existent.  On a live system, this script would also
-# update `/run/s6/compiled' if necessary, and finally exec() into
+# update `/run/s6/compiled' if necessary, and finally run
 # `s6-rc-update -n /etc/slew/db/compiled'.
 #
 # This script does not delete anything or trigger any real state transition, and
