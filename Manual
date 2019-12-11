@@ -141,7 +141,7 @@ installed into `/etc/slew'.  The service definitions under the root of this
 repository are the core services provided by slew, and assume the presence of
 busybox (along with necessary applets) on the system; services named `firewall'
 and `sshd' are set as optional dependencies (cf. `lib/prep/80-odep.rc')
-respectively for `machine' and `services', and can be respectively linked to
+respectively for `network' and `services', and can be respectively linked to
 `nftables' and `openssh' when they are installed.
 
 Although s6-rc bundles can be used to implement polymorphism (eg. a `keymap'
