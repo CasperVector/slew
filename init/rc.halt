@@ -37,5 +37,5 @@ foreground { mount -n -o remount,ro / }
 foreground { sync }
 
 foreground { echo "* halt: triggering "${1}"..." }
-${1} -f
+busybox ${1} -f
 
