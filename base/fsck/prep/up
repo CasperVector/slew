@@ -17,7 +17,7 @@ case 1
 	
 case [23]
 	echo 'fsck: need reboot after repairing'
-	touch /run/reboot
+	touch /run/slew/reboot
 	exit 1
 
 case *

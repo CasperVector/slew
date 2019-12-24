@@ -1,5 +1,7 @@
 #!/bin/rc
 
+priv=./data/rate
+
 fn echo_ret {
 	if ([ $1 -eq 256 ]) {
 		echo 'killed by signal `'$2''''

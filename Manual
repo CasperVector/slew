@@ -78,9 +78,9 @@ booting.
 Unlike s6-linux-init, slew follows the busybox init(8) signal convention, and
 `SIGUSR1' and `SIGUSR2' sent to `s6-svscan' will respectively trigger halt and
 poweroff, instead of the other way around.  Additionally, if some service(s)
-fail to start during booting, and `/run/reboot' exists, `rc.init' will trigger
-reboot automatically; this can be useful for certain scenarios (eg. when
-required by fsck(8)) where automatic reboot is desirable.
+fail to start during booting, and `/run/slew/reboot' exists, `rc.init' will
+trigger reboot automatically; this can be useful for certain scenarios (eg.
+when required by fsck(8)) where automatic reboot is desirable.
 
 slew uses a configuration file, `lib/slew.rc', that controls some (but not all)
 aspects of init/rc system in a centralised way (like `rc.conf' in some other

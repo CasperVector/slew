@@ -3,12 +3,13 @@
 . /etc/slew/lib/cfg.rc
 
 fn init {
+	mkdir -p /run/slew
 	~ $quiet 1 && con=consoles
 	s6-rc-init -c /etc/slew/db/compiled /run/service || exit 2
 	echo '* init: starting services...'
 	if (s6-rc -v2 -t20000 -u change default $con) {
 		echo '* init: services started'
-	} else if ([ -f /run/reboot ]) {
+	} else if ([ -f /run/slew/reboot ]) {
 		echo '* init: reboot required; triggering reboot...'
 		exit 1
 	} else echo '* init: some service(s) failed to start'

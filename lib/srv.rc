@@ -5,5 +5,4 @@ fn cdr { echo $1 | sed 's/\.[^.]*$//' }
 
 self=`{basename `{pwd}}
 name=`{car $self}
-priv=/run/srv-data/$self.priv
 
