@@ -1,0 +1,6 @@
+#!/bin/rc
+
+sed '/^#/d; s/ .*//' /lib/modules/`{uname -r}^/modules.devname |
+	xargs modprobe -qab
+exit 0
+

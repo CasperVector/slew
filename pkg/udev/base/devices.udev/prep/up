@@ -1,15 +1,8 @@
 #!/bin/rc
 
-for (f in `{kmod static-nodes >[2] /dev/null | awk '/Module/ {print $2}'}) {
-	modprobe -q -b $f >[2] /dev/null
-}
-
-udevd & ret=0
+ret=0
 udevadm trigger '--action=add' '--type=subsystems' || ret=1
 udevadm trigger '--action=add' '--type=devices' || ret=1
 udevadm settle '--timeout=9'
-udevadm control --exit || ret=1
-
-wait || ret=1
 exit $ret
 
