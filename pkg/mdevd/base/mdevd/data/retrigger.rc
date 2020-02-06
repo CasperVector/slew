@@ -1,0 +1,5 @@
+#!/bin/rc -e
+
+s6-svwait -U -t 1000 .
+mdevd-coldplug
+

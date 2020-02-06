@@ -1,0 +1,7 @@
+#!/bin/rc -e
+
+for (d in `{find /sys/devices -name 'usb[0-9]*'}) {
+	if ([ -f $d/uevent ]) echo add > $d/uevent
+}
+mdevd-coldplug
+

@@ -1,0 +1,7 @@
+#!/bin/rc
+
+for (i in 1 2) {
+	find /sys -name modalias -type f |
+	xargs sort -u | xargs modprobe -qab
+}
+
