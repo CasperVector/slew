@@ -1,0 +1,6 @@
+#!/bin/rc
+
+sleep 2
+udevadm trigger '--action=add' '--type=subsystems'
+udevadm trigger '--action=add' '--type=devices'
+

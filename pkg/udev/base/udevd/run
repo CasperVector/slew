@@ -1,6 +1,9 @@
-#!/bin/rc -e
+#!/bin/execlineb -P
 
-exec >[2=1]
-./data/retrigger.exl
-exec emptyenv -p udevd
+fdmove -c 2 1
+ifthenelse
+{ [ -f ./data/retrigger.lock ] }
+{ background -d { flock -n ./data/retrigger.lock ./data/retrigger.rc } }
+{ touch ./data/retrigger.lock }
+emptyenv -p udevd
 
