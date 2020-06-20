@@ -3,9 +3,9 @@
 # Removes the `.prep' directory, all `prep' subdirectories, as well as all
 # service directories which contained `prep/ignore'.
 
-~ $#* 1 && cd $1 || false
+~ $#* 1; cd $1
 for (srv in `{ls}) {
-	[ -f $srv/prep/ignore ] && rm -rf $srv || rm -rf $srv/prep
+	if ([ -f $srv/prep/ignore ]) { rm -rf $srv } else rm -rf $srv/prep
 }
 rm -rf .prep
 

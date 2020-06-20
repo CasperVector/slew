@@ -4,7 +4,7 @@
 # to the source service directory will be created; already existing directories
 # will be skipped, so the user can customise bundle members if necessary.
 
-~ $#* 1 && cd $1 || false
+~ $#* 1; cd $1
 for (srv in `{ls}) if ([ -f $srv/prep/multi ]) {
 	src=`{cat $srv/prep/multi}
 	for (dest in `{cat $srv/contents}) if (! [ -d $dest ]) ln -sT $src $dest

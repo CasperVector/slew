@@ -3,7 +3,7 @@
 # `prep/odep' and `prep/ordep' respectively specify optional dependencies and
 # optional reverse dependencies, which will be ignored if nonexistent.
 
-~ $#* 1 && cd $1 || false
+~ $#* 1; cd $1
 
 fn dep_add {
 	if (~ `{cat $1/type} bundle) {

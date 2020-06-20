@@ -7,7 +7,7 @@
 # exist but `srv/producer-for' exists and says `srv.log', `srv' will be added to
 # `srv.log/consumer-for'.
 
-~ $#* 1 && cd $1 || false
+~ $#* 1; cd $1
 for (srv in `{ls}) {
 	if ([ -f $srv/prep/log ]) {
 		cp -a `{realpath `{cat $srv/prep/log}} $srv.log

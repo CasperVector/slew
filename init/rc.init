@@ -21,7 +21,7 @@ fn init {
 	exit 0
 }
 
-~ $quiet 1 && @ init || { init >[2=1] | tee /dev/console }
+if (~ $quiet 1) { @ init } else { init >[2=1] | tee /dev/console }
 switch ($status(1)) {
 case 1
 	exec kill -TERM 1

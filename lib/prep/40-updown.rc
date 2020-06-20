@@ -4,7 +4,7 @@
 # `.prep/base' specifies `/etc/slew/main', `srv/prep/up' will make `srv/up' say
 # `/etc/slew/main/srv/prep/up'.
 
-~ $#* 1 && cd $1 || false
+~ $#* 1; cd $1
 base=`{cat .prep/base}
 for (srv in `{ls}) if (~ `{cat $srv/type} oneshot) {
 	for (type in up down) if ([ -f $srv/prep/$type ]) {

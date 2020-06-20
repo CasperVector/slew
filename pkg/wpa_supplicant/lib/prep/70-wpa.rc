@@ -1,7 +1,7 @@
 #!/bin/rc -e
 # Adds `wpacli.wlan0' to the `ordep' of `wpasup.wlan0'.
 
-~ $#* 1 && cd $1 || false
+~ $#* 1; cd $1
 for (srv in `{ls | sed -nr 's/^wpasup\.([^.]+)$/\1/p'}) {
 	echo wpacli.$srv >> wpasup.$srv/prep/ordep
 }

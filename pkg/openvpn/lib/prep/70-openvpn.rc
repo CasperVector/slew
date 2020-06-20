@@ -1,7 +1,7 @@
 #!/bin/rc -e
 # Adds `dhcpc.vpn0' to the `ordep' of `openvpn.srv' if it uses device `vpn0'.
 
-~ $#* 1 && cd $1 || false
+~ $#* 1; cd $1
 for (srv in `{ls | sed -nr 's/^openvpn\.([^.]+)$/\1/p'}) {
 	dev=`{sed -nr 's/^dev ([^ ]+).*/\1/p' < /etc/openvpn/$srv.conf}
 	if (~ $#dev 1) echo dhcpc.$dev >> openvpn.$srv/prep/ordep

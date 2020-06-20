@@ -3,14 +3,13 @@
 fn rotate {
 	if ([ `{stat -c '%s' $1/0} -lt $3 ]) return
 	for (i in `{seq 0 $2 | tac}) if ([ -f $1/$i ]) {
-		[ $i -eq $2 ] && rm $1/$i ||
-		mv $1/$i $1/`{expr $i + 1 || true}
+		if ([ $i -eq $2 ]) { rm $1/$i } \
+			else mv $1/$i $1/`{expr $i + 1 || true}
 	}
 }
 
 for (f in @*) if ([ -f $f ]) {
 	{ cat $f >> $1/0; rm $f; rotate $* } || exec cat
 }
-cat >> $1/0 && { rotate $*; ret=0 } || ret=1
-exit $ret
+cat >> $1/0; rotate $*
 

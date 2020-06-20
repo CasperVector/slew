@@ -14,5 +14,5 @@ fn fin {
 }
 
 echo > /dev/console
-~ $quiet 1 && fin || { fin >[2=1] | tee /dev/console }
+if (~ $quiet 1) { fin } else { fin >[2=1] | tee /dev/console }
 

@@ -3,7 +3,7 @@
 # Expands all links at the root level of $1, and creates empty `prep'
 # subdirectories if nonexistent.
 
-~ $#* 1 && cd $1 || false
+~ $#* 1; cd $1
 for (srv in `{ls}) if ([ -L $srv ]) {
 	src=`{realpath $srv}
 	rm -f $srv
