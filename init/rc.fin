@@ -6,7 +6,11 @@ fn fin {
 	echo '* fin: stopping services...'
 	if (s6-rc -v2 -t10000 -da change) {
 		echo '* fin: services stopped'
-	} else echo '! fin: some service(s) failed to stop'
+	} else {
+		echo '! fin: some service(s) failed to stop'
+		s6-rc -n 100 -da change
+		~ $quiet 1 || sleep 1
+	}
 }
 
 echo > /dev/console

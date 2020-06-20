@@ -12,7 +12,11 @@ fn init {
 	} else if ([ -f /run/slew/reboot ]) {
 		echo '* init: reboot required; triggering reboot...'
 		exit 1
-	} else echo '! init: some service(s) failed to start'
+	} else {
+		echo '! init: some service(s) failed to start'
+		s6-rc -n 100 -u change default $con
+		~ $quiet 1 || sleep 2
+	}
 	~ $quiet 1 || s6-rc -u change consoles
 	exit 0
 }
