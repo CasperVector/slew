@@ -12,5 +12,5 @@ if (! [ -d $logd ]) {
 	if ([ -f $logd ]) mv $logd $logd.`{date +%Y%m%d%H%M%S}^.$pid
 	install -d -o $logu -g adm -m 0750 $logd
 }
-exec s6-setuidgid $logu emptyenv -p s6-log $args
+exec s6-setuidgid $logu emptyenv -p s6-log -d 3 $args
 

@@ -8,7 +8,7 @@ exec \
 redirfd -rnb 0 fifo \
 s6-setuidgid catchlog \
 emptyenv -p \
-s6-log -bp t T \
+s6-log -d 3 -bp t T \
 	!'/etc/slew/init/save_log.rc /var/log/init 6 5000000' \
 	/run/uncaught-logs
 
