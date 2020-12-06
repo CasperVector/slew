@@ -1,0 +1,11 @@
+--- dcron-4.5/main.c	2011-05-02 07:00:17.000000000 +0800
++++ dcron-4.5/main.c	2020-12-06 20:48:28.266352503 +0800
+@@ -269,7 +269,7 @@
+ 		/* daemon in foreground */
+ 
+ 		/* stay in existing session, but start a new process group */
+-		if (setpgid(0,0)) {
++		if (setpgid(0,0) && errno != EPERM) {
+ 			perror("setpgid");
+ 			exit(1);
+ 		}

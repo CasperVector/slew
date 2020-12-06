@@ -1,0 +1,14 @@
+diff -ur thinkfan-1.2.1/src/thinkfan.cpp thinkfan-1.2.1/src/thinkfan.cpp
+--- thinkfan-1.2.1/src/thinkfan.cpp	2020-07-20 07:20:39.000000000 +0800
++++ thinkfan-1.2.1/src/thinkfan.cpp	2020-10-29 12:20:35.912145232 +0800
+@@ -442,10 +442,6 @@
+ 	std::unique_ptr<PidFileHolder> pid_file;
+ #endif
+ 
+-	if (!isatty(fileno(stdout))) {
+-		Logger::instance().enable_syslog();
+-	}
+-
+ #if not defined(DISABLE_BUGGER)
+ 	std::set_terminate(handle_uncaught);
+ #endif
