@@ -3,8 +3,6 @@
 cd /
 redirfd -w 1 /dev/console
 fdmove -c 2 1
-foreground { s6-svc -a /run/service/s6-svscan.log }
-foreground { s6-svc -X /run/service/s6-svscan.log }
 wait -r { }
 
 foreground { echo "* halt: syncing disks..." }
