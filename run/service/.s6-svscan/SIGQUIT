@@ -1,5 +1,5 @@
 #!/bin/rc
 
 /etc/slew/init/rc.fin reboot
-s6-svscanctl -q /run/service
+s6-svscanctl -qb /run/service
 
