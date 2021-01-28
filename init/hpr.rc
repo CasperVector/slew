@@ -1,0 +1,8 @@
+#!/bin/rc
+
+op=`{cat /run/slew/hpr}
+~ $#op 1 || op=reboot
+
+echo '* halt: triggering' $op^'...'
+exec busybox $op -f
+

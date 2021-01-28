@@ -34,6 +34,5 @@ foreground { echo "* halt: remounting rootfs read-only..." }
 foreground { mount -n -o remount,ro / }
 foreground { sync }
 
-foreground { echo "* halt: triggering "${1}"..." }
-busybox ${1} -f
+/etc/slew/init/hpr.rc
 

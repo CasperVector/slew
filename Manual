@@ -52,8 +52,9 @@ which can be linked from `/sbin/init' or specified on the kernel command line.
 script linked to `init/rc.halt', the stage 3 executable, on shutdown.  At the
 beginning and end of stage 2, `init/rc.init' and `init/rc.fin' are executed
 respectively.  The `crash' script of `s6-svscan' is linked to `init/rc.crash'.
-When `rc.fin' is executed at the end of stage 2, its $1 will be set to the same
-string (among `reboot'/`halt'/`poweroff') that will be $1 of `rc.halt'.
+When `rc.fin' is executed at the end of stage 2, its $1 will be set to `reboot',
+`halt' or `poweroff' depending on the signal handler that triggered its execution
+(cf. `run/service/.s6-svscan').
 
 Before exec()ing into `s6-svscan', `rc.boot' copies everything in
 `/etc/slew/run' into `/run' as is (so if your distribution needs `/run/sshd'

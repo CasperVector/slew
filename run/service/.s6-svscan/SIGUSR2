@@ -1,5 +1,5 @@
 #!/bin/rc
 
 /etc/slew/init/rc.fin poweroff
-s6-svscanctl -7 /run/service
+s6-svscanctl -t /run/service
 

@@ -3,6 +3,7 @@
 . /etc/slew/lib/cfg.rc
 
 fn fin {
+	echo $1 > /run/slew/hpr
 	echo '* fin: stopping services...'
 	if (s6-rc -v2 -t10000 -da change) {
 		echo '* fin: services stopped'
@@ -16,5 +17,5 @@ fn fin {
 }
 
 echo > /dev/console
-if (~ $quiet 1) { fin } else { fin >[2=1] | tee /dev/console }
+if (~ $quiet 1) { fin $* } else { fin $* >[2=1] | tee /dev/console }
 
