@@ -1,0 +1,7 @@
+#!/bin/rc
+
+exec >[2=1]
+limit descriptors 1048576
+limit maxproc 1048576
+exec containerd
+
