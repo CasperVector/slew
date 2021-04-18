@@ -108,7 +108,7 @@ the contents of the `services' bundle; by the way, the `network' and `local'
 oneshots in `base' are also among the most customised services.
 
 `lib/prep.rc' is the service definition preprocessor, and is invoked like:
-  # cp -a /etc/slew/main /etc/slew/main.prep
+  # cp -rL /etc/slew/main /etc/slew/main.prep
   # /etc/slew/lib/prep.rc /etc/slew/lib/prep /etc/slew/main.prep
 What `prep.rc' does is simply running, on the $2 directory, all executables with
 the `.rc' extension in the $1 directory in lexical order, and each script is a

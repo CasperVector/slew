@@ -26,7 +26,7 @@ if ([ -d /etc/slew/db/$1 ]) {
 } else mkdir -p /etc/slew/db
 ln -snf $1 /etc/slew/db/compiled
 
-cp -a /etc/slew/$1 /etc/slew/prep.$1
+cp -rL /etc/slew/$1 /etc/slew/prep.$1
 /etc/slew/lib/prep.rc /etc/slew/lib/prep /etc/slew/prep.$1
 s6-rc-compile -h fdholder /etc/slew/db/$1 /etc/slew/prep.$1
 if (~ $live 1) s6-rc-update -n /etc/slew/db/compiled

@@ -5,8 +5,11 @@
 # will be skipped, so the user can customise bundle members if necessary.
 
 ~ $#* 1; cd $1
+base=`{cat .prep/base}
 for (srv in `{ls}) if ([ -f $srv/prep/multi ]) {
 	src=`{cat $srv/prep/multi}
-	for (dest in `{cat $srv/contents}) if (! [ -d $dest ]) ln -sT $src $dest
+	for (dest in `{cat $srv/contents}) {
+		if (! [ -d $dest ]) ln -sT $base/$src $dest
+	}
 }
 

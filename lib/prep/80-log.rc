@@ -8,9 +8,10 @@
 # `srv.log/consumer-for'.
 
 ~ $#* 1; cd $1
+base=`{cat .prep/base}
 for (srv in `{ls}) {
 	if ([ -f $srv/prep/log ]) {
-		cp -a `{realpath `{cat $srv/prep/log}} $srv.log
+		cp -a `{realpath $base/`{cat $srv/prep/log}} $srv.log
 		echo $srv.log > $srv/producer-for
 		echo $srv >> $srv.log/consumer-for
 		if ([ -d $srv/prep/logdata ]) {
