@@ -3,6 +3,7 @@
 
 ~ $#* 1; cd $1
 for (srv in `{ls | sed -nr 's/^openvpn\.([^.]+)$/\1/p'}) {
+	~ $#debug 0 || echo $srv
 	dev=`{sed -nr 's/^dev ([^ ]+).*/\1/p' < /etc/openvpn/$srv.conf}
 	if (~ $#dev 1) echo dhcpc.$dev >> openvpn.$srv/prep/ordep
 }

@@ -1,5 +1,11 @@
 #!/bin/rc -e
 
 ~ $#* 2 || exit 1
-for (pass in $1/*.rc) if ([ -x $pass ]) $pass $2
+for (pass in $1/*.rc) if ([ -x $pass ]) {
+	if (! ~ $#debug 0) {
+		printf '>>> '
+		basename $pass
+	}
+	$pass $2
+}
 

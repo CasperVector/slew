@@ -3,6 +3,7 @@
 
 ~ $#* 1; cd $1
 for (srv in `{ls | sed -nr 's/^tinc\.([^.]+)$/\1/p'}) {
+	~ $#debug 0 || echo $srv
 	dev=`{sed -nr 's/^Interface *= *([^ ]+).*/\1/p' < /etc/tinc/$srv/tinc.conf}
 	if (~ $#dev 1) echo dhcpc.$dev >> tinc.$srv/prep/ordep
 }

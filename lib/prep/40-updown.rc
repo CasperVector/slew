@@ -7,6 +7,7 @@
 ~ $#* 1; cd $1
 base=`{cat .prep/base}
 for (srv in `{ls}) if (~ `{cat $srv/type} oneshot) {
+	~ $#debug 0 || echo $srv
 	for (type in up down) if ([ -f $srv/prep/$type ]) {
 		echo $base/$srv/prep/$type > $srv/$type
 	}

@@ -12,11 +12,17 @@ fn dep_add {
 }
 
 for (srv in `{ls}) {
-	if ([ -f $srv/prep/odep ]) for (dep in `{cat $srv/prep/odep}) {
-		if ([ -d $dep ]) dep_add $srv $dep
+	if ([ -f $srv/prep/odep ]) {
+		~ $#debug 0 || echo $srv
+		for (dep in `{cat $srv/prep/odep}) {
+			if ([ -d $dep ]) dep_add $srv $dep
+		}
 	}
-	if ([ -f $srv/prep/ordep ]) for (rdep in `{cat $srv/prep/ordep}) {
-		if ([ -d $rdep ]) dep_add $rdep $srv
+	if ([ -f $srv/prep/ordep ]) {
+		~ $#debug 0 || echo $srv
+		for (rdep in `{cat $srv/prep/ordep}) {
+			if ([ -d $rdep ]) dep_add $rdep $srv
+		}
 	}
 }
 

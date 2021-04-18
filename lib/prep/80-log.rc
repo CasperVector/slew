@@ -11,6 +11,7 @@
 base=`{cat .prep/base}
 for (srv in `{ls}) {
 	if ([ -f $srv/prep/log ]) {
+		~ $#debug 0 || echo $srv
 		cp -a `{realpath $base/`{cat $srv/prep/log}} $srv.log
 		echo $srv.log > $srv/producer-for
 		echo $srv >> $srv.log/consumer-for
@@ -19,6 +20,7 @@ for (srv in `{ls}) {
 			cp -a $srv/prep/logdata/* $srv.log/data
 		}
 	} else if ([ -f $srv/producer-for ]) {
+		~ $#debug 0 || echo $srv
 		echo $srv >> `{cat $srv/producer-for}^/consumer-for
 	}
 }

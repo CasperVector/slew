@@ -7,6 +7,7 @@
 ~ $#* 1; cd $1
 base=`{cat .prep/base}
 for (srv in `{ls}) if ([ -f $srv/prep/multi ]) {
+	~ $#debug 0 || echo $srv
 	src=`{cat $srv/prep/multi}
 	for (dest in `{cat $srv/contents}) {
 		if (! [ -d $dest ]) ln -sT $base/$src $dest
