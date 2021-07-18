@@ -15,7 +15,7 @@ foreground { sleep 2 }
 
 foreground { echo "* halt: sending SIGKILL to processes..." }
 foreground { kill -KILL -1 }
-wait { }
+wait -t 10 { }
 
 foreground { echo "* halt: saving clock and stray logs..." }
 foreground {
