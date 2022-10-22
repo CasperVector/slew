@@ -1,5 +1,5 @@
 #!/bin/rc
 
-logu=phplog
+logu=_phplog
 args=(n6 s5000000 !gzip t $logd)
 

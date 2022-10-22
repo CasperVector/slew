@@ -1,5 +1,5 @@
 #!/bin/rc
 
-logu=docklog
+logu=_docklog
 args=(n6 s5000000 !gzip t $logd)
 

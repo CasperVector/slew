@@ -1,5 +1,5 @@
 #!/bin/rc
 
-logu=syslog
+logu=_syslog
 args=(n6 s5000000 !gzip t $logd)
 

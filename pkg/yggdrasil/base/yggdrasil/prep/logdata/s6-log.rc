@@ -1,5 +1,5 @@
 #!/bin/rc
 
-logu=ygglog
+logu=_ygglog
 args=(n6 s5000000 !gzip t $logd)
 

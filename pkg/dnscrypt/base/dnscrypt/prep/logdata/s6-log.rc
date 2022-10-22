@@ -1,5 +1,5 @@
 #!/bin/rc
 
-logu=dnslog
+logu=_dnslog
 args=(n6 s5000000 !gzip t $logd)
 
