@@ -6,5 +6,5 @@ exec >[2=1]
 
 rate_run
 echo 'starting ssh port forward on' $name
-exec s6-setuidgid holebot emptyenv -p ssh -N $name
+exec s6-setuidgid _holebot emptyenv -p ssh -N $name
 

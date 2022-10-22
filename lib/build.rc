@@ -22,7 +22,7 @@ if (~ $live 1 && ! [ -L $rcompiled ]) exit 1
 mkdir $builddir
 cp -rL /etc/slew/$1 $builddir/prep
 /etc/slew/lib/prep.rc /etc/slew/lib/prep $builddir/prep
-s6-rc-compile -h fdholder $builddir/new $builddir/prep
+s6-rc-compile -h _fdholder $builddir/new $builddir/prep
 
 if ([ -d $dbdir/$1 ]) {
 	if (

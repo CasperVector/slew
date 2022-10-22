@@ -62,7 +62,7 @@ for sshd to run, you can create an empty `sshd' directory in `/etc/slew/run',
 perhaps with necessary permission restrictions), and sets the environment using
 `s6-envdir' according to the `/etc/slew/env' directory if the latter exists.
 The catch-all logger is located at `/run/service/s6-svscan.log', and logs to
-`/run/uncaught-logs' as the `catchlog' user.
+`/run/uncaught-logs' as the `_catchlog' user.
 
 Apart from doing other well-known tasks, `rc.halt' also triggers the
 `init/save_log.rc' s6-log processor to save logs from `/run/uncaught-logs' to

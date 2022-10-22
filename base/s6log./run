@@ -3,7 +3,7 @@
 exec >[2=1]
 . /etc/slew/lib/srv.rc
 
-logu=s6log
+logu=_s6log
 logd=/var/log/`{cdr $self}
 args=(n6 s5000000 !gzip t T $logd)
 if ([ -f ./data/s6-log.rc ]) . ./data/s6-log.rc
