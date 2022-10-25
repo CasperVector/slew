@@ -1,0 +1,3 @@
+#!/bin/rc
+exec >[2=1] env -i PATH=$PATH BCRON_USER=cron bcron-start
+

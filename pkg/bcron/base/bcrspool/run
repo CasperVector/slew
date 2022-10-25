@@ -1,0 +1,10 @@
+#!/bin/rc
+
+exec >[2=1] emptyenv -p s6-envuidgid cron \
+fdmove 1 3 s6-ipcserver -U -1 -- /var/run/bcron-spool \
+importas -i IPCREMOTEEUID IPCREMOTEEUID \
+importas -i IPCREMOTEEGID IPCREMOTEEGID \
+env PROTO=UNIX \
+'UNIXREMOTEEUID=${IPCREMOTEEUID}' 'UNIXREMOTEGUID=${IPCREMOTEEGID}' \
+bcron-spool
+
