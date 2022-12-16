@@ -2,7 +2,12 @@
 
 fn rotate {
 	if ([ `{stat -c '%s' $1/0} -lt $3 ]) return
-	for (i in `{seq 0 $2 | tac}) if ([ -f $1/$i ]) {
+	for (i in `{seq 1 $2 | tac}) {
+		j=`{expr $i - 1 || true}
+		if ([ ! -f $1/$i -a -f $1/$j ]) { break } else j=()
+	}
+	if (~ $#j 0) j=$2
+	for (i in `{seq 0 $j | tac}) if ([ -f $1/$i ]) {
 		if ([ $i -eq $2 ]) { rm $1/$i } \
 			else mv $1/$i $1/`{expr $i + 1 || true}
 	}

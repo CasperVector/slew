@@ -9,6 +9,10 @@ foreground { echo "* halt: syncing disks..." }
 foreground { sync }
 
 foreground { echo "* halt: sending SIGTERM/SIGCONT to processes..." }
+foreground {
+  redirfd -w 2 /dev/null
+  s6-svc -T 500 -wd /run/service/s6-svscan.log
+}
 foreground { kill -TERM -1 }
 foreground { kill -CONT -1 }
 foreground { sleep 2 }
@@ -22,6 +26,7 @@ foreground {
   cd /run/uncaught-logs
   redirfd -r 0 current
   redirfd -w 1 /dev/null
+  s6-setuidgid _catchlog
   /etc/slew/init/save_log.rc /var/log/init 6 5000000
 }
 foreground { /etc/slew/init/save_clock.rc }
