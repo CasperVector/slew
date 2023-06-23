@@ -30,5 +30,5 @@ unexport !
 
 fdmove -c 2 1
 cd /run/service
-s6-svscan -t0
+s6-svscan
 

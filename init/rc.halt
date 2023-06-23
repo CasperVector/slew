@@ -1,4 +1,4 @@
-#!/bin/execlineb -S0
+#!/bin/execlineb -P
 
 cd /
 redirfd -w 1 /dev/console
