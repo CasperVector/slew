@@ -1,5 +1,5 @@
 #!/bin/rc
 
-if ([ -f /var/lib/alsa/asound.state ]) alsactl restore
+if ([ -f /var/lib/alsa/asound.state ]) alsactl -U restore
 exit 0
 
