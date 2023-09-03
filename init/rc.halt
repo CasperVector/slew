@@ -11,7 +11,7 @@ foreground { sync }
 foreground { echo "* halt: sending SIGTERM/SIGCONT to processes..." }
 foreground {
   redirfd -w 2 /dev/null
-  s6-svc -T 500 -wd /run/service/s6-svscan.log
+  s6-svc -T 500 -wD /run/service/s6-svscan.log
 }
 foreground { kill -TERM -1 }
 foreground { kill -CONT -1 }
