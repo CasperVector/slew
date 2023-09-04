@@ -1,5 +1,3 @@
 #!/bin/rc
-
-[ -d /var/log/init ] || install -d -o _catchlog -g adm -m 0750 /var/log/init
 exit 0
 

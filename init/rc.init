@@ -18,6 +18,7 @@ fn init {
 		~ $quiet 1 || sleep 2
 	}
 	~ $quiet 1 || s6-rc -u change consoles
+	[ -d /var/log/init ] || install -d -o _catchlog -g adm -m 0750 /var/log/init
 	s6-svc -a /run/service/s6-svscan.log
 	exit 0
 }
