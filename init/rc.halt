@@ -9,15 +9,15 @@ foreground { echo "* halt: syncing disks..." }
 foreground { sync }
 
 foreground { echo "* halt: sending SIGTERM/SIGCONT to processes..." }
-foreground {
-  redirfd -w 2 /dev/null
-  s6-svc -T 500 -wD /run/service/s6-svscan.log
-}
 foreground { kill -TERM -1 }
 foreground { kill -CONT -1 }
 foreground { sleep 2 }
 
 foreground { echo "* halt: sending SIGKILL to processes..." }
+foreground {
+  redirfd -w 2 /dev/null
+  s6-svc -T 500 -wD /run/service/s6-svscan.log
+}
 foreground { kill -KILL -1 }
 wait -t 10 { }
 
